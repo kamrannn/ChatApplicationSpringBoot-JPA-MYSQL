@@ -11,12 +11,18 @@ import java.util.List;
 @Service
 public class ChatService {
 
-    @Autowired
-    private ChatRepository chatRepository;
+    //Autowiring the ChatRepository Class
+    final private ChatRepository chatRepository;
+    public ChatService(ChatRepository chatRepository) {
+        this.chatRepository = chatRepository;
+    }
+
+    //Get all chats from the Database
     public List<Chat> ListAllChat(){
         return chatRepository.findAll();
     }
 
+    //Save chat into database by getting values from controller
     public void saveChat(Chat chat) {
         Date date = new Date();
         chat.setAnswerDate(date.toString());
@@ -25,16 +31,19 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
+    //Update chat into database by getting values from controller
     public void updateChat(Chat chat){
         Date date = new Date();
         chat.setUpdateDate(date.toString());
         chatRepository.save(chat);
     }
 
+    //Find chat from database by using ChatID
     public Chat getChat(Long id) {
         return chatRepository.findById(id).get();
     }
 
+    //Delete chat from the database
     public void deleteChat(Long id) {
         chatRepository.deleteById(id);
     }

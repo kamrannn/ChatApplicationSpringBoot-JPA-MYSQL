@@ -7,20 +7,20 @@ public class User {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private long id; //User ID
+    private long id; //variable to store the User ID
     @Column(nullable = false)
-    private String firstName; //User First Name
-    private String lastName;//User Last Name
+    private String firstName; //variable to store the User First Name
+    private String lastName;//variable to store the User Last Name
     @Column(nullable = false,unique = true)
-    private String email;//User email
-    private int age;//User age
-//    private Date dob;//User date of birth
+    private String email;//variable to store the User email
+    private int age;//variable to store the User age
     @Column(nullable = false)
-    private String password; //User Password
+    private String password; //variable to store the User Password
 
     public User() {
     }
 
+    //Constructor to set the values
     public User(long id,String firstName, String lastName, String email, int age, String password) {
         this.id= id;
         this.firstName = firstName;

@@ -9,15 +9,11 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private long id; //Chat ID having a question and answer
     @Column(nullable = false,unique = true)
-    private String question; //Chat question
-    @Column(nullable = false)
-    private String answer; //Chat answer
-    @Column(nullable = false)
-    private String  questionDate;
-    @Column(nullable = false)
-    private String  answerDate;
-    @Column(nullable = false)
-    private String  updateDate;
+    private String question; //variable to store the question
+    private String answer; //variable to store the answer
+    private String  questionDate; //variable to store the date when the questioned will be made
+    private String  answerDate;//variable to store the date when the answer will be made
+    private String  updateDate; // variable to store the date when question will be edited/updated
 
     public Chat() {
     }

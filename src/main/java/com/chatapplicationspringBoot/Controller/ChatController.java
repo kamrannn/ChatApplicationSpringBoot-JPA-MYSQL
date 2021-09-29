@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@EnableSwagger2
 @RestController
 @RequestMapping("/chats")
 public class ChatController {
@@ -26,13 +29,14 @@ public class ChatController {
         return new ResponseEntity<>("Kindly login first", HttpStatus.UNAUTHORIZED);
     }
 
+    //This API shows all the chats
     @GetMapping("")
     public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
 
         if (authorization(key1)) {
             try{
                 List<Chat> chatList= chatService.ListAllChat();
-                return new ResponseEntity<>(chatList,HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(chatList,HttpStatus.OK);
             }catch (Exception e){
                 return new ResponseEntity<>("There is no data in chat table ",HttpStatus.NOT_FOUND);
             }
@@ -41,6 +45,7 @@ public class ChatController {
         }
     }
 
+    //This API only show certain object by taking on ID number as a Path variable
     @GetMapping("/question/{id}")
     public ResponseEntity<Object> GetQuestion(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
         if (authorization(key1)) {
@@ -55,6 +60,7 @@ public class ChatController {
         }
     }
 
+    //This API only show certain object by taking on ID number in Request parameter
     @GetMapping("/question")
     public ResponseEntity<Object> GetById(@RequestHeader("Authorization") String key1,@RequestParam("question") Long id){
 
@@ -71,6 +77,7 @@ public class ChatController {
         }
     }
 
+    //This API just add the chat
     @PostMapping("/add")
     public ResponseEntity Add(@RequestHeader("Authorization") String key1, @RequestBody Chat chat) {
         if (authorization(key1)) {
@@ -86,16 +93,18 @@ public class ChatController {
         }
     }
 
+    //This API updates the chat by passing the Chat object
     @PutMapping("/update")
-    public ResponseEntity<?> Update(@RequestBody Chat chat) {
+    public ResponseEntity<Object> Update(@RequestBody Chat chat) {
         try{
             chatService.updateChat(chat);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("The Chat has been updated",HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("The Chat is not updated",HttpStatus.NOT_FOUND);
         }
     }
 
+    //This API delete certain chat using Path variable
     @DeleteMapping("/delete/{id}")
     public void delete( @PathVariable Long id,@RequestHeader("Authorization") String key1) {
 
@@ -104,6 +113,7 @@ public class ChatController {
         }
     }
 
+    //This API deletes certain chat using request parameter
     @DeleteMapping("/delete")
     public void delete(@RequestHeader("Authorization") String key1,@RequestParam ("delete") Long id) {
         if (authorization(key1) == true) {

@@ -9,26 +9,38 @@ import java.util.List;
 
 @Service
 public class UserService {
+    // Autowired, Constructor is made
+    final private UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-    @Autowired
-    private UserRepository userRepository;
-
+    //Get all users from Database
     public List<User> listAllUser() {
         return userRepository.findAll();
     }
 
+    //Save User into database by getting values from controller
     public void saveUser(User user) {
         userRepository.save(user);
     }
 
+    //Find by ID User from database using userID
     public User getUser(Long id) {
         return userRepository.findById(id).get();
     }
 
+    //Delete user from db by using user ID
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
+    //Update user into database by getting values from controller
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
+    //checking the email, whether it exists in the Db or not
     public Integer FindByEmail(String email, String password){
         try{
             User user = userRepository.findUserByEmail(email);
