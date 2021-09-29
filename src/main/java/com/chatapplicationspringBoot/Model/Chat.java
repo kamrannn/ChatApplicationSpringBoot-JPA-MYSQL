@@ -8,14 +8,27 @@ public class Chat {
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private long id; //Chat ID having a question and answer
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String question; //Chat question
     @Column(nullable = false)
     private String answer; //Chat answer
     @Column(nullable = false)
-    private Date questionDate;
+    private String  questionDate;
     @Column(nullable = false)
-    private Date answerDate;
+    private String  answerDate;
+    @Column(nullable = false)
+    private String  updateDate;
+
+    public Chat() {
+    }
+
+    public Chat(long id,String question, String answer, String questionDate, String answerDate) {
+        this.id= id;
+        this.question = question;
+        this.answer = answer;
+        this.questionDate=questionDate;
+        this.answerDate= answerDate;
+    }
 
     public long getId() {
         return id;
@@ -41,19 +54,27 @@ public class Chat {
         this.answer = answer;
     }
 
-    public Date getQuestionDate() {
+    public String  getQuestionDate() {
         return questionDate;
     }
 
-    public void setQuestionDate(Date questionDate) {
+    public void setQuestionDate(String  questionDate) {
         this.questionDate = questionDate;
     }
 
-    public Date getAnswerDate() {
+    public String  getAnswerDate() {
         return answerDate;
     }
 
-    public void setAnswerDate(Date answerDate) {
+    public void setAnswerDate(String  answerDate) {
         this.answerDate = answerDate;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 }

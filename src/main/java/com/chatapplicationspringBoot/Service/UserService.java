@@ -28,4 +28,18 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
+    public Integer FindByEmail(String email, String password){
+        try{
+            User user = userRepository.findUserByEmail(email);
+            if(user.getPassword().equals(password)){
+                return 1;
+            }else {
+                return 2;
+            }
+
+        }catch(Exception exception){
+            return 3;
+        }
+    }
 }
