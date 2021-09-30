@@ -1,19 +1,36 @@
 package com.chatapplicationspringBoot.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
-import java.util.Date;
 @Entity
 public class Chat {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private long id; //Chat ID having a question and answer
-    @Column(nullable = false,unique = true)
     private String question; //variable to store the question
     private String answer; //variable to store the answer
     private String  questionDate; //variable to store the date when the questioned will be made
     private String  answerDate;//variable to store the date when the answer will be made
     private String  updateDate; // variable to store the date when question will be edited/updated
+
+/*    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;*/
+
+    private String userName;
+
+
+/*    @ManyToOne
+    @JsonIgnore
+    private User user;*/
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("chatList")
+    private User user;
 
     public Chat() {
     }
@@ -24,6 +41,15 @@ public class Chat {
         this.answer = answer;
         this.questionDate=questionDate;
         this.answerDate= answerDate;
+    }
+
+    public Chat(long id,String question, String answer, String questionDate, String answerDate, User user) {
+        this.id= id;
+        this.question = question;
+        this.answer = answer;
+        this.questionDate=questionDate;
+        this.answerDate= answerDate;
+        this.user=user;
     }
 
     public long getId() {
@@ -72,5 +98,21 @@ public class Chat {
 
     public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getUserName() {
+        return getUser().getFirstName();
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
