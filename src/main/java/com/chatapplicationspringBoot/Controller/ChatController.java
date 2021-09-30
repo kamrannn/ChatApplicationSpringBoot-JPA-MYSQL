@@ -24,10 +24,16 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    private String key = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
+    //key value for the authorization
+    private String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
-    public boolean authorization(String key1) {
-        return key.equals(key1);
+    /**
+     *
+     * @param userToken
+     * @return true or false
+     */
+    public boolean authorization(String userToken) {
+        return token.equals(token);
     }
 
     public ResponseEntity<Object> UnAuthorizeUser() {
@@ -93,7 +99,7 @@ public class ChatController {
                 return new ResponseEntity("Chat has been successfully added",HttpStatus.OK);
             } catch (Exception e) {
                 LOG.error("The Question already Exists: "+chat.getQuestion(),e.getMessage());
-                return new ResponseEntity("The Question already Exists"+ chat.getQuestion()+"- Kindly change the question", HttpStatus.CONFLICT);
+                return new ResponseEntity("The Question ("+chat.getQuestion()+") already Exists, kindly change the question", HttpStatus.CONFLICT);
             }
         }
         else{
@@ -112,7 +118,7 @@ public class ChatController {
         }
     }
 
-    //This API delete certain chat using Path variable
+    //This API deletes certain chat using Path variable
     @DeleteMapping("/delete/{id}")
     public void delete( @PathVariable Long id,@RequestHeader("Authorization") String key1) {
 
