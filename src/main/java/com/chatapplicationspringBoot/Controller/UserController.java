@@ -2,6 +2,7 @@ package com.chatapplicationspringBoot.Controller;
 
 import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Service.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.NoSuchElementException;
 @EnableSwagger2
 @RestController
 @RequestMapping("/users")
+@Api(value="User Operations", description="CRUD REST API's for the User")
 public class UserController {
     final UserService userService;
     //UserService constructor, used in place of Autowired

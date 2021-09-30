@@ -17,8 +17,12 @@ import java.util.NoSuchElementException;
 @RequestMapping("/chats")
 public class ChatController {
 
-    @Autowired
-    ChatService chatService;
+    //Autowiring through constructor
+    final ChatService chatService;
+    public ChatController(ChatService chatService) {
+        this.chatService = chatService;
+    }
+
     private String key = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
     public boolean authorization(String key1) {
