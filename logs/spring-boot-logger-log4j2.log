@@ -1,32 +1,30 @@
-2021-09-30 12:10:05,677 INFO o.s.b.StartupInfoLogger [main] Starting ChatApplicationSpringBootApplication using Java 1.8.0_73 on LTI-TRAINING-05 with PID 488 (F:\Development\ChatApplicationSpringBoot\target\classes started by kamranabbasi in F:\Development\ChatApplicationSpringBoot)
-2021-09-30 12:10:05,708 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
-2021-09-30 12:10:06,927 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2021-09-30 12:10:07,005 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 62 ms. Found 2 JPA repository interfaces.
-2021-09-30 12:10:07,598 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
-2021-09-30 12:10:07,598 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
-2021-09-30 12:10:07,598 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
-2021-09-30 12:10:07,598 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.53]
-2021-09-30 12:10:07,770 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
-2021-09-30 12:10:07,770 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1890 ms
-2021-09-30 12:10:07,942 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-09-30 12:10:07,989 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.32.Final
-2021-09-30 12:10:08,239 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-2021-09-30 12:10:08,348 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
-2021-09-30 12:10:08,708 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
-2021-09-30 12:10:08,739 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
-2021-09-30 12:10:09,473 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-09-30 12:10:09,489 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-09-30 12:10:10,161 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-09-30 12:10:10,614 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
-2021-09-30 12:10:10,645 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
-2021-09-30 12:10:10,645 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
-2021-09-30 12:10:10,661 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
-2021-09-30 12:10:10,676 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
-2021-09-30 12:10:11,212 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_1
-2021-09-30 12:10:11,243 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_2
-2021-09-30 12:10:11,243 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_3
-2021-09-30 12:10:11,259 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: listUsingGET_1
-2021-09-30 12:10:11,290 INFO o.s.b.StartupInfoLogger [main] Started ChatApplicationSpringBootApplication in 6.301 seconds (JVM running for 8.984)
-2021-09-30 12:12:00,212 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2021-09-30 12:12:00,212 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-2] Initializing Servlet 'dispatcherServlet'
-2021-09-30 12:12:00,215 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-2] Completed initialization in 2 ms
+2021-09-30 13:02:18,661 INFO o.s.b.StartupInfoLogger [main] Starting ChatApplicationSpringBootApplication using Java 1.8.0_73 on LTI-TRAINING-05 with PID 11124 (F:\Development\ChatApplicationSpringBoot\target\classes started by kamranabbasi in F:\Development\ChatApplicationSpringBoot)
+2021-09-30 13:02:18,677 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-09-30 13:02:20,036 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-09-30 13:02:20,161 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 105 ms. Found 2 JPA repository interfaces.
+2021-09-30 13:02:20,802 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2021-09-30 13:02:20,802 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2021-09-30 13:02:20,802 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2021-09-30 13:02:20,802 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.53]
+2021-09-30 13:02:20,989 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2021-09-30 13:02:20,989 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2171 ms
+2021-09-30 13:02:21,161 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-09-30 13:02:21,208 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-09-30 13:02:21,458 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-09-30 13:02:21,568 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2021-09-30 13:02:21,943 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2021-09-30 13:02:21,958 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2021-09-30 13:02:22,693 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-09-30 13:02:22,708 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-09-30 13:02:23,380 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-09-30 13:02:23,849 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2021-09-30 13:02:23,880 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2021-09-30 13:02:23,880 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
+2021-09-30 13:02:23,896 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
+2021-09-30 13:02:23,911 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
+2021-09-30 13:02:24,505 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_1
+2021-09-30 13:02:24,536 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_2
+2021-09-30 13:02:24,536 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_3
+2021-09-30 13:02:24,567 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: listUsingGET_1
+2021-09-30 13:02:24,614 INFO o.s.b.StartupInfoLogger [main] Started ChatApplicationSpringBootApplication in 6.611 seconds (JVM running for 8.918)
+2021-09-30 14:43:37,630 WARN c.z.h.p.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h39m15s578ms957µs).

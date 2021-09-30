@@ -42,8 +42,8 @@ public class ChatController {
 
     //This API shows all the chats
     @GetMapping("")
-    public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
-        if (authorization(key1)) {
+    public ResponseEntity<Object> list(@RequestHeader("Authorization") String token) {
+        if (authorization(token)) {
             try{
                 List<Chat> chatList= chatService.ListAllChat();
                 return new ResponseEntity<>(chatList,HttpStatus.OK);
@@ -57,9 +57,9 @@ public class ChatController {
 
     //This API only show certain object by taking on ID number as a Path variable
     @GetMapping("/question/{id}")
-    public ResponseEntity<Object> GetQuestion(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
+    public ResponseEntity<Object> GetQuestion(@RequestHeader("Authorization") String token, @PathVariable Long id) {
 
-        if (authorization(key1)) {
+        if (authorization(token)) {
             try {
                 Chat chat = chatService.getChat(id);
                 return new ResponseEntity<>(chat, HttpStatus.OK);
@@ -74,9 +74,9 @@ public class ChatController {
 
     //This API only show certain object by taking on ID number in Request parameter
     @GetMapping("/question")
-    public ResponseEntity<Object> GetById(@RequestHeader("Authorization") String key1,@RequestParam("question") Long id){
+    public ResponseEntity<Object> GetById(@RequestHeader("Authorization") String token,@RequestParam("question") Long id){
 
-        if (authorization(key1)) {
+        if (authorization(token)) {
             try {
                 Chat chat = chatService.getChat(id);
                 return new ResponseEntity(chat, HttpStatus.OK);
@@ -90,10 +90,17 @@ public class ChatController {
         }
     }
 
-    //This API just add the chat
+
+    /**
+     * @author : Kamran Abbasi
+     * @description : This API just add the chat to the database
+     * @param token
+     * @param chat
+     * @return
+     */
     @PostMapping("/add")
-    public ResponseEntity Add(@RequestHeader("Authorization") String key1, @RequestBody Chat chat) {
-        if (authorization(key1)) {
+    public ResponseEntity Add(@RequestHeader("Authorization") String token, @RequestBody Chat chat) {
+        if (authorization(token)) {
             try{
                 chatService.saveChat(chat);
                 return new ResponseEntity("Chat has been successfully added",HttpStatus.OK);
@@ -107,7 +114,12 @@ public class ChatController {
         }
     }
 
-    //This API updates the chat by passing the Chat object
+    /**
+     * @author Kamran Abbasi
+     * @description This API updates the chat by passing the Chat object
+     * @param chat
+     * @return
+     */
     @PutMapping("/update")
     public ResponseEntity<Object> Update(@RequestBody Chat chat) {
         try{
@@ -121,17 +133,17 @@ public class ChatController {
 
     //This API deletes certain chat using Path variable
     @DeleteMapping("/delete/{id}")
-    public void delete( @PathVariable Long id,@RequestHeader("Authorization") String key1) {
+    public void delete( @PathVariable Long id,@RequestHeader("Authorization") String token) {
 
-        if (authorization(key1) == true) {
+        if (authorization(token)) {
             chatService.deleteChat(id);
         }
     }
 
     //This API deletes certain chat using request parameter
     @DeleteMapping("/delete")
-    public void delete(@RequestHeader("Authorization") String key1,@RequestParam ("delete") Long id) {
-        if (authorization(key1) == true) {
+    public void delete(@RequestHeader("Authorization") String token,@RequestParam ("delete") Long id) {
+        if (authorization(token)) {
             chatService.deleteChat(id);
         }
     }

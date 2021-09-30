@@ -33,7 +33,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/login")
-    public ResponseEntity IsLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public ResponseEntity IsLogin(@RequestBody String email, @RequestBody String password) {
         int check = userService.FindByEmail(email, password);
         switch (check) {
             case 1:
@@ -63,7 +63,7 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
         try {
-            if (authorization(key1) == true) {
+            if (authorization(key1)) {
                 List<User> userList = userService.listAllUser();
                 return new ResponseEntity<>(userList, HttpStatus.OK);
             } else {
@@ -93,7 +93,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserByID(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
         try {
-            if (authorization(key1) == true) {
+            if (authorization(key1)) {
                 User user = userService.getUser(id);
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             } else {
@@ -107,7 +107,7 @@ public class UserController {
     //This API updates the user by just giving certain ID all values should be update otherwise other fields will be NULL
     @PutMapping("/update")
     public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @RequestBody User user) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             try {
                 userService.updateUser(user);
                 return new ResponseEntity<>("User has been successfully Updated",HttpStatus.OK);
@@ -123,7 +123,7 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id, @RequestHeader("Authorization") String key1) {
 
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             userService.deleteUser(id);
         }
     }
@@ -131,7 +131,7 @@ public class UserController {
     //This API deletes the user by using Request Parameter
     @DeleteMapping("/delete")
     public void delete(@RequestHeader("Authorization") String key1, @RequestParam("delete") Long id) {
-        if (authorization(key1) == true) {
+        if (authorization(key1)) {
             userService.deleteUser(id);
         }
     }
