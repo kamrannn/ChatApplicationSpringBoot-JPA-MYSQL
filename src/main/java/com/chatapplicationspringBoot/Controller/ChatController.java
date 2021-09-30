@@ -1,9 +1,9 @@
 package com.chatapplicationspringBoot.Controller;
 
 import com.chatapplicationspringBoot.Model.Chat;
-import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Service.ChatService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/chats")
 public class ChatController {
+    private static final Logger LOG =  LogManager.getLogger(ChatController.class);
 
     //Autowiring through constructor
     final ChatService chatService;
@@ -36,7 +37,6 @@ public class ChatController {
     //This API shows all the chats
     @GetMapping("")
     public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
-
         if (authorization(key1)) {
             try{
                 List<Chat> chatList= chatService.ListAllChat();
@@ -52,11 +52,13 @@ public class ChatController {
     //This API only show certain object by taking on ID number as a Path variable
     @GetMapping("/question/{id}")
     public ResponseEntity<Object> GetQuestion(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
+
         if (authorization(key1)) {
             try {
                 Chat chat = chatService.getChat(id);
                 return new ResponseEntity<>(chat, HttpStatus.OK);
             } catch (NoSuchElementException e) {
+                LOG.error("NO chat Exists Against this Question ID: "+id,e.getMessage());
                 return new ResponseEntity<>("No chat exists against this ID",HttpStatus.NOT_FOUND);
             }
         }else {

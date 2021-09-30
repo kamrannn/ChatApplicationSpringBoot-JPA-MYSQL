@@ -3,7 +3,6 @@ package com.chatapplicationspringBoot.Controller;
 import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Service.UserService;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +25,13 @@ public class UserController {
     private String key = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
     //Login it takes email and password from frontend then check from database by calling object with email
+
+    /**
+     * @author Kamran Abbasi
+     * @param email
+     * @param password
+     * @return
+     */
     @GetMapping("/login")
     public ResponseEntity IsLogin(@RequestParam("email") String email, @RequestParam("password") String password) {
         int check = userService.FindByEmail(email, password);
@@ -39,6 +45,11 @@ public class UserController {
         }
     }
 
+    /**
+     *
+     * @param key1
+     * @return
+     */
     public boolean authorization(String key1) {
         if (key.equals(key1)) return true;
         else return false;
