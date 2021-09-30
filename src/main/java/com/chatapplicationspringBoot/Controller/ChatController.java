@@ -75,6 +75,7 @@ public class ChatController {
                 Chat chat = chatService.getChat(id);
                 return new ResponseEntity(chat, HttpStatus.OK);
             } catch (NoSuchElementException e) {
+                LOG.error("NO chat Exists Against this Question ID: "+id,e.getMessage());
                 return new ResponseEntity("There is no data available for this chat ID", HttpStatus.NOT_FOUND);
             }
         }
@@ -91,7 +92,8 @@ public class ChatController {
                 chatService.saveChat(chat);
                 return new ResponseEntity("Chat has been successfully added",HttpStatus.OK);
             } catch (Exception e) {
-                return new ResponseEntity("The Question already Exists", HttpStatus.CONFLICT);
+                LOG.error("The Question already Exists: "+chat.getQuestion(),e.getMessage());
+                return new ResponseEntity("The Question already Exists"+ chat.getQuestion()+"- Kindly change the question", HttpStatus.CONFLICT);
             }
         }
         else{
