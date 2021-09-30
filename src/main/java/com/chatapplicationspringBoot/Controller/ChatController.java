@@ -98,7 +98,7 @@ public class ChatController {
                 chatService.saveChat(chat);
                 return new ResponseEntity("Chat has been successfully added",HttpStatus.OK);
             } catch (Exception e) {
-                LOG.error("The Question already Exists: "+chat.getQuestion(),e.getMessage());
+                LOG.error("The Question already Exists: "+chat.getQuestion(), e.getMessage());
                 return new ResponseEntity("The Question ("+chat.getQuestion()+") already Exists, kindly change the question", HttpStatus.CONFLICT);
             }
         }
@@ -114,6 +114,7 @@ public class ChatController {
             chatService.updateChat(chat);
             return new ResponseEntity<>("The Chat has been updated",HttpStatus.OK);
         } catch (NoSuchElementException e) {
+            LOG.error("The Chat is not updated because of: "+e.getMessage());
             return new ResponseEntity<>("The Chat is not updated",HttpStatus.NOT_FOUND);
         }
     }
