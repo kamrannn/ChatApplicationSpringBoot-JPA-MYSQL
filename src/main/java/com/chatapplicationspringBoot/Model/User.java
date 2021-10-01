@@ -24,7 +24,7 @@ public class User {
     private Set<Chat> chats;*/
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("book")
+    @JsonIgnoreProperties("chat")
     private List<Chat> chatList = new ArrayList<>();
 
 /*    @OneToMany(targetEntity = User.class, cascade = CascadeType.ALL)
