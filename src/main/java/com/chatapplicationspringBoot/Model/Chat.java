@@ -1,13 +1,10 @@
 package com.chatapplicationspringBoot.Model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 @Entity
+@Table(name = "t_chat")
 public class Chat {
     @Id
-    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private long id; //Chat ID having a question and answer
     private String question; //variable to store the question
@@ -15,12 +12,6 @@ public class Chat {
     private String  questionDate; //variable to store the date when the questioned will be made
     private String  answerDate;//variable to store the date when the answer will be made
     private String  updateDate; // variable to store the date when question will be edited/updated
-
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("chatList")
-    private User user;
 
     public Chat() {
     }
@@ -31,15 +22,6 @@ public class Chat {
         this.answer = answer;
         this.questionDate=questionDate;
         this.answerDate= answerDate;
-    }
-
-    public Chat(long id,String question, String answer, String questionDate, String answerDate, User user) {
-        this.id= id;
-        this.question = question;
-        this.answer = answer;
-        this.questionDate=questionDate;
-        this.answerDate= answerDate;
-        this.user=user;
     }
 
     public long getId() {
@@ -88,15 +70,6 @@ public class Chat {
 
     public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
-    }
-
-    @JsonBackReference
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
 }

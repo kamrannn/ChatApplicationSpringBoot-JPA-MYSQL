@@ -56,15 +56,17 @@ public class ChatService {
         chatRepository.deleteById(id);
     }
 
+/*
     public List<Chat> ListAllChatByUserId(Long userID) {
         return chatRepository.findByUserId(userID);
     }
+*/
 
-    public Chat CreateUserChat(Long userID, Chat chat) throws Exception {
+/*    public Chat CreateUserChat(Long userID, Chat chat) throws Exception {
         return userRepository.findById(userID).map(user -> {
             chat.setUser(user);
             return chatRepository.save(chat);
         }).orElseThrow(() -> new Exception("Not Found"));
 
-    }
+    }*/
 }

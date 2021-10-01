@@ -143,15 +143,15 @@ public class ChatController {
         }
     }
 
-    @GetMapping("/user/{userId}/chat")
-    public ResponseEntity<Object> ListCourseById(@PathVariable(value = "userId") Long userId) {
+/*    @GetMapping("/user/{userId}/chat")
+    public ResponseEntity<Object> ListChatById(@PathVariable(value = "userId") Long userId) {
         List<Chat> chatList = chatService.ListAllChatByUserId(userId);
         return new ResponseEntity(chatList, HttpStatus.OK);
-    }
+    }*/
 
-    @PostMapping("/user/{userId}/chat")
+/*    @PostMapping("/user/{userId}/chat")
     public ResponseEntity<Object> CreateChatAgainstUser(@PathVariable(value = "userId") Long userId, @RequestBody Chat chat) throws Exception {
         chatService.CreateUserChat(userId, chat);
         return new ResponseEntity("OK", HttpStatus.OK);
-    }
+    }*/
 }

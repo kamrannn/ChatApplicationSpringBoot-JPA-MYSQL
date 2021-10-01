@@ -5,6 +5,10 @@ import com.chatapplicationspringBoot.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,6 +26,14 @@ public class UserService {
 
     //Save User into database by getting values from controller
     public void saveUser(User user) {
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String date = formatter.format(new Date());
+
+        int size =  user.getChats().size();
+        for(int i=0;i<size;i++){
+            user.getChats().get(i).setQuestionDate(date);
+            user.getChats().get(i).setAnswerDate(date);
+        }
         userRepository.save(user);
     }
 
@@ -37,6 +49,13 @@ public class UserService {
 
     //Update user into database by getting values from controller
     public void updateUser(User user) {
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String date = formatter.format(new Date());
+        int size =  user.getChats().size();
+/*        for(int i=0;i<size;i++){
+            user.getChats().get(i).setQuestion(user.getChats().get(0).getQuestionDate());
+            user.getChats().get(i).setUpdateDate(date);
+        }*/
         userRepository.save(user);
     }
 
