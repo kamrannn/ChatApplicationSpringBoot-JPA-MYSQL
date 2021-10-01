@@ -27,11 +27,6 @@ public class ChatController {
     //key value for the authorization
     private String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
-    /**
-     *
-     * @param userToken
-     * @return true or false
-     */
     public boolean authorization(String userToken) {
         return token.equals(token);
     }

@@ -1,6 +1,7 @@
 package com.chatapplicationspringBoot.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,17 +20,9 @@ public class User {
     private int age;//variable to store the User age
     private String password; //variable to store the User Password
 
-/*    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private Set<Chat> chats;*/
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("chat")
     private List<Chat> chatList = new ArrayList<>();
-
-/*    @OneToMany(targetEntity = User.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
-    private List<Chat> chats;*/
 
     public User() {
     }
@@ -92,6 +85,7 @@ public class User {
         this.password = password;
     }
 
+    @JsonManagedReference
     public List<Chat> getChatList() {
         return chatList;
     }

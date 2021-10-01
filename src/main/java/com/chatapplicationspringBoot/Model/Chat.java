@@ -1,6 +1,6 @@
 package com.chatapplicationspringBoot.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -16,18 +16,8 @@ public class Chat {
     private String  answerDate;//variable to store the date when the answer will be made
     private String  updateDate; // variable to store the date when question will be edited/updated
 
-/*    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;*/
 
-    private String userName;
-
-
-/*    @ManyToOne
-    @JsonIgnore
-    private User user;*/
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnoreProperties("chatList")
     private User user;
@@ -100,6 +90,7 @@ public class Chat {
         this.updateDate = updateDate;
     }
 
+    @JsonBackReference
     public User getUser() {
         return user;
     }
@@ -108,11 +99,4 @@ public class Chat {
         this.user = user;
     }
 
-    public String getUserName() {
-        return getUser().getFirstName();
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 }
