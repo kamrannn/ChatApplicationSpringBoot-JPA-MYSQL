@@ -17,7 +17,7 @@ public class User {
     private int age;//variable to store the User age
     private String password; //variable to store the User Password
 
-    @OneToMany(targetEntity = Chat.class,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Chat.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private List<Chat> chats=new ArrayList<>();
 

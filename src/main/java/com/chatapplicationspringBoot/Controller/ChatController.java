@@ -85,7 +85,6 @@ public class ChatController {
         }
     }
 
-
     /**
      * @author : Kamran Abbasi
      * @description : This API just add the chat to the database
@@ -142,16 +141,4 @@ public class ChatController {
             chatService.deleteChat(id);
         }
     }
-
-/*    @GetMapping("/user/{userId}/chat")
-    public ResponseEntity<Object> ListChatById(@PathVariable(value = "userId") Long userId) {
-        List<Chat> chatList = chatService.ListAllChatByUserId(userId);
-        return new ResponseEntity(chatList, HttpStatus.OK);
-    }*/
-
-/*    @PostMapping("/user/{userId}/chat")
-    public ResponseEntity<Object> CreateChatAgainstUser(@PathVariable(value = "userId") Long userId, @RequestBody Chat chat) throws Exception {
-        chatService.CreateUserChat(userId, chat);
-        return new ResponseEntity("OK", HttpStatus.OK);
-    }*/
 }

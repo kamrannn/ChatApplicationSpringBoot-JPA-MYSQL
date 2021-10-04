@@ -1,12 +1,10 @@
 package com.chatapplicationspringBoot.Service;
 
+import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -49,13 +47,6 @@ public class UserService {
 
     //Update user into database by getting values from controller
     public void updateUser(User user) {
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String date = formatter.format(new Date());
-        int size =  user.getChats().size();
-/*        for(int i=0;i<size;i++){
-            user.getChats().get(i).setQuestion(user.getChats().get(0).getQuestionDate());
-            user.getChats().get(i).setUpdateDate(date);
-        }*/
         userRepository.save(user);
     }
 
@@ -72,5 +63,25 @@ public class UserService {
         }catch(Exception exception){
             return 3;
         }
+    }
+
+    public User AddChatByUserID(long userID, List<Chat> chat) {
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String date = formatter.format(new Date());
+        System.out.println(userID);
+
+        int size =  chat.size();
+        for(int i=0;i<size;i++){
+            chat.get(i).setQuestionDate(date);
+            chat.get(i).setAnswerDate(date);
+        }
+        User user = userRepository.findUsersById(userID);
+        List<Chat> userChats = user.getChats();
+        for (Chat chat1:chat
+             ) {
+            userChats.add(chat1);
+        }
+        userRepository.save(user);
+        return user;
     }
 }

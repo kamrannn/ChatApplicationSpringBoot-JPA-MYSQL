@@ -1,5 +1,6 @@
 package com.chatapplicationspringBoot.Controller;
 
+import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Service.UserService;
 import io.swagger.annotations.Api;
@@ -8,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -135,4 +139,20 @@ public class UserController {
             userService.deleteUser(id);
         }
     }
+
+    @PostMapping("/add/chat")
+    public ResponseEntity<Object> AddChatByUserID(@RequestHeader long userID, @RequestBody List<Chat> chat) {
+        System.out.println(userID);
+        System.out.println(chat.get(0).getQuestion());
+        userService.AddChatByUserID(userID, chat);
+        return new ResponseEntity(null, HttpStatus.OK);
+    }
+
+/*    @PutMapping("/update/chat")
+    public ResponseEntity<Object> UpdateChatByUserID(@RequestHeader long userID, @RequestBody List<Chat> chat) {
+        System.out.println(userID);
+        System.out.println(chat.get(0).getQuestion());
+        userService.UpdateChatByUserID(userID, chat);
+        return new ResponseEntity(null, HttpStatus.OK);
+    }*/
 }
