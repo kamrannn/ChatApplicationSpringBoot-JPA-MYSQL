@@ -19,23 +19,28 @@ public class ChatController {
     private static final Logger LOG =  LogManager.getLogger(ChatController.class);
 
     //Autowiring through constructor
-    final ChatService chatService;
+    private final ChatService chatService;
     public ChatController(ChatService chatService) {
         this.chatService = chatService;
     }
 
     //key value for the authorization
-    private String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
+    private final static String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
     public boolean authorization(String userToken) {
-        return token.equals(token);
+        return token.equals(userToken);
     }
 
     public ResponseEntity<Object> UnAuthorizeUser() {
         return new ResponseEntity<>("Kindly login first", HttpStatus.UNAUTHORIZED);
     }
 
-    //This API shows all the chats
+    /**
+     * @Author "Kamran"
+     * @Description This API shows all the chats
+     * @param token
+     * @return
+     */
     @GetMapping("")
     public ResponseEntity<Object> list(@RequestHeader("Authorization") String token) {
         if (authorization(token)) {
@@ -50,7 +55,13 @@ public class ChatController {
         }
     }
 
-    //This API only show certain object by taking on ID number as a Path variable
+    /**
+     * @Author "Kamran"
+     * @Description "This API only shows the specific question by taking Question ID as a Path variable"
+     * @param token
+     * @param id
+     * @return
+     */
     @GetMapping("/question/{id}")
     public ResponseEntity<Object> GetQuestion(@RequestHeader("Authorization") String token, @PathVariable Long id) {
 
@@ -67,17 +78,23 @@ public class ChatController {
         }
     }
 
-    //This API only show certain object by taking on ID number in Request parameter
+    /**
+     * @Author "Kamran"
+     * @Description "This API only show specific question by taking question ID in Request parameter"
+     * @param token
+     * @param id
+     * @return
+     */
     @GetMapping("/question")
     public ResponseEntity<Object> GetById(@RequestHeader("Authorization") String token,@RequestParam("question") Long id){
 
         if (authorization(token)) {
             try {
                 Chat chat = chatService.getChat(id);
-                return new ResponseEntity(chat, HttpStatus.OK);
+                return new ResponseEntity<>(chat, HttpStatus.OK);
             } catch (NoSuchElementException e) {
                 LOG.error("NO chat Exists Against this Question ID: "+id,e.getMessage());
-                return new ResponseEntity("There is no data available for this chat ID", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("There is no data available for this chat ID", HttpStatus.NOT_FOUND);
             }
         }
         else{
@@ -93,14 +110,14 @@ public class ChatController {
      * @return
      */
     @PostMapping("/add")
-    public ResponseEntity Add(@RequestHeader("Authorization") String token, @RequestBody Chat chat) {
+    public ResponseEntity<Object> Add(@RequestHeader("Authorization") String token, @RequestBody Chat chat) {
         if (authorization(token)) {
             try{
                 chatService.saveChat(chat);
-                return new ResponseEntity("Chat has been successfully added",HttpStatus.OK);
+                return new ResponseEntity<>("Chat has been successfully added",HttpStatus.OK);
             } catch (Exception e) {
                 LOG.error("The Question already Exists: "+chat.getQuestion(), e.getMessage());
-                return new ResponseEntity("The Question ("+chat.getQuestion()+") already Exists, kindly change the question", HttpStatus.CONFLICT);
+                return new ResponseEntity<>("The Question ("+chat.getQuestion()+") already Exists, kindly change the question", HttpStatus.CONFLICT);
             }
         }
         else{
@@ -125,7 +142,12 @@ public class ChatController {
         }
     }
 
-    //This API deletes certain chat using Path variable
+    /**
+     * @author "Kamran"
+     * @description "This API deletes specific chat using Question ID in Path variable"
+     * @param id
+     * @param token
+     */
     @DeleteMapping("/delete/{id}")
     public void delete( @PathVariable Long id,@RequestHeader("Authorization") String token) {
 

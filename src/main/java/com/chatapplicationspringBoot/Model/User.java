@@ -1,11 +1,17 @@
 package com.chatapplicationspringBoot.Model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "t_user")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
@@ -21,72 +27,6 @@ public class User {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private List<Chat> chats=new ArrayList<>();
 
-    public User() {
-    }
-
-    //Constructor to set the values
-    public User(long id,String firstName, String lastName, String email, int age, String password) {
-        this.id= id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email=email;
-        this.age= age;
-        this.password=password;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Chat> getChats() {
-        return chats;
-    }
-
-    public void setChats(List<Chat> chats) {
-        this.chats = chats;
-    }
+    @ManyToMany(targetEntity = Category.class,fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private List<Category> categories = new ArrayList<>();
 }

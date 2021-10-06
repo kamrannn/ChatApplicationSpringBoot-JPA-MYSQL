@@ -1,7 +1,10 @@
 package com.chatapplicationspringBoot.Service;
 
+import com.chatapplicationspringBoot.Controller.ChatController;
 import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Repository.ChatRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -9,6 +12,7 @@ import java.util.List;
 
 @Service
 public class ChatService {
+    private static final Logger LOG =  LogManager.getLogger(ChatController.class);
 
     //Autowiring the ChatRepository Class
     final private ChatRepository chatRepository;
@@ -28,7 +32,12 @@ public class ChatService {
         chat.setAnswerDate(date.toString());
         chat.setQuestionDate(date.toString());
         chat.setUpdateDate(date.toString());
-        chatRepository.save(chat);
+        try{
+            chatRepository.save(chat);
+        }catch (Exception e){
+            LOG.error("The Question already Exists: "+chat.getQuestion(), e.getMessage());
+        }
+
     }
 
     //Update chat into database by getting values from controller

@@ -8,17 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @EnableSwagger2
 @RestController
 @RequestMapping("/users")
-@Api(value="User Operations", description="CRUD REST API's for the User")
+@Api(value="User Operations - CRUD REST API's for the User")
 public class UserController {
     final UserService userService;
     //UserService constructor, used in place of Autowired
@@ -26,133 +23,168 @@ public class UserController {
         this.userService = userService;
     }
     //This is token for checking authorization
-    private String key = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
-
-    //Login it takes email and password from frontend then check from database by calling object with email
+    private static final String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
     /**
-     * @author Kamran Abbasi
+     * @Author "Kamran"
+     * @Description "Login it takes email and password from frontend then check from database by calling object with email"
      * @param email
      * @param password
      * @return
      */
     @GetMapping("/login")
-    public ResponseEntity IsLogin(@RequestBody String email, @RequestBody String password) {
-        int check = userService.FindByEmail(email, password);
-        switch (check) {
-            case 1:
-                return new ResponseEntity("You are successfully logged in", HttpStatus.FOUND);
-            case 2:
-                return new ResponseEntity("Your Password is Wrong", HttpStatus.UNAUTHORIZED);
-            default:
-                return new ResponseEntity("The account doesn't exists", HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<Object> UserLogin(@RequestHeader String email , @RequestHeader String password) {
+        return userService.Authentication(email,password);
+    }
+
+    /**
+     * @Author "Kamran"
+     * @Description "Authorizing the token"
+     * @param token
+     * @return
+     */
+    public boolean authorization(String token) {
+        return UserController.token.equals(token);
+    }
+
+    /**
+     * @Author "Kamran"
+     * @Description "if the user is un-authorized"
+     * @return
+     */
+    public ResponseEntity<Object> UnAuthorizeUser() {
+        return new ResponseEntity<>("Kindly login first", HttpStatus.UNAUTHORIZED);
+    }
+
+    //This API shows all the users
+
+    /**
+     * @Author "Kamran"
+     * @Description "This api is listing all the users present in the database"
+     * @param token
+     * @return
+     */
+    @GetMapping("/listofusers")
+    public ResponseEntity<Object> listOfUsers(@RequestHeader("Authorization") String token) {
+            if (authorization(token)) {
+                return userService.listAllUsers();
+            } else {
+                return UnAuthorizeUser();
+            }
+    }
+
+    /**
+     * @Author "Kamran"
+     * @Description "This API just add the user"
+     * @param token
+     * @param user
+     * @return
+     */
+    @PostMapping("/adduser")
+    public ResponseEntity<Object> add(@RequestHeader("Authorization") String token, @RequestBody User user) {
+        try{
+            if (authorization(token)) {
+                return userService.saveUser(user);
+            } else {
+                return UnAuthorizeUser();
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     *
+     * @Author "Kamran"
+     * @Description "This API only show certain object by taking on ID number"
      * @param key1
+     * @param id
      * @return
      */
-    public boolean authorization(String key1) {
-        if (key.equals(key1)) return true;
-        else return false;
-    }
-
-    public ResponseEntity UnAuthorizeUser() {
-        return new ResponseEntity("Kindly login first", HttpStatus.UNAUTHORIZED);
-    }
-
-    //This API shows all the users
-    @GetMapping("")
-    public ResponseEntity<Object> list(@RequestHeader("Authorization") String key1) {
-        try {
-            if (authorization(key1)) {
-                List<User> userList = userService.listAllUser();
-                return new ResponseEntity<>(userList, HttpStatus.OK);
-            } else {
-                return UnAuthorizeUser();
-            }
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>("Data not found", HttpStatus.NOT_FOUND);
-        }
-    }
-
-    //This API just add the user
-    @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestHeader("Authorization") String key1, @RequestBody User user) throws Exception {
-        if (authorization(key1)) {
-            try {
-                userService.saveUser(user);
-                return new ResponseEntity("User has been successfully added", HttpStatus.OK);
-            } catch (Exception e) {
-                return new ResponseEntity("The email already Exists", HttpStatus.CONFLICT);
-            }
-        } else {
-            return UnAuthorizeUser();
-        }
-    }
-
-    //This API only show certain object by taking on ID number
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserByID(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
-        try {
+    public ResponseEntity<Object> getUserByID(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
             if (authorization(key1)) {
-                User user = userService.getUser(id);
-                return new ResponseEntity<User>(user, HttpStatus.OK);
+                return userService.getUser(id); //It will return the Response
             } else {
-                return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
+                return UnAuthorizeUser(); //If the user is not authorized
             }
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-        }
     }
 
-    //This API updates the user by just giving certain ID all values should be update otherwise other fields will be NULL
+    /**
+     * @Author "Kamran"
+     * @Description " This API updates the user by just giving certain ID all values should be updated otherwise other fields will be NULL"
+     * @param key1
+     * @param user
+     * @return
+     */
     @PutMapping("/update")
     public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @RequestBody User user) {
         if (authorization(key1)) {
             try {
-                userService.updateUser(user);
-                return new ResponseEntity<>("User has been successfully Updated",HttpStatus.OK);
-            } catch (NoSuchElementException e) {
-                return new ResponseEntity<>("User is not Updated",HttpStatus.NOT_FOUND);
+                return userService.updateUser(user);
+            } catch (Exception exception) {
+                return new ResponseEntity<>(exception.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
             return UnAuthorizeUser() ;
         }
     }
 
-    //This API deletes the user by using Path variable
+    /**
+     * @Author "Kamran"
+     * @Description " This API deletes the user by using Path variable"
+     * @param token
+     * @param id
+     * @return
+     */
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable Long id, @RequestHeader("Authorization") String key1) {
+    public ResponseEntity<Object> DeleteUser(@PathVariable Long id, @RequestHeader("Authorization") String token) {
 
-        if (authorization(key1)) {
-            userService.deleteUser(id);
+        if (authorization(token)) {
+            try{
+                return userService.deleteUser(id);
+            }catch (Exception exception){
+                return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        else{
+            return UnAuthorizeUser();
         }
     }
 
-    //This API deletes the user by using Request Parameter
+    /**
+     * @Author "Kamran"
+     * @Description " This API deletes the user by using Request Parameter"
+     * @param token
+     * @param id
+     */
     @DeleteMapping("/delete")
-    public void delete(@RequestHeader("Authorization") String key1, @RequestParam("delete") Long id) {
-        if (authorization(key1)) {
-            userService.deleteUser(id);
+    public ResponseEntity<Object> delete(@RequestHeader("Authorization") String token, @RequestParam("delete") Long id) {
+        if (authorization(token)) {
+            try{
+                return userService.deleteUser(id);
+            }catch (Exception exception){
+                return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        else{
+            return UnAuthorizeUser();
         }
     }
 
+
+    /**
+     * @Author "Kamran"
+     * @Description " This API is adding the chat with respect to User ID"
+     * @param userID
+     * @param chat
+     * @return
+     */
     @PostMapping("/add/chat")
     public ResponseEntity<Object> AddChatByUserID(@RequestHeader long userID, @RequestBody List<Chat> chat) {
-        System.out.println(userID);
-        System.out.println(chat.get(0).getQuestion());
-        userService.AddChatByUserID(userID, chat);
-        return new ResponseEntity(null, HttpStatus.OK);
+        try {
+            return userService.AddChatByUserID(userID, chat);
+        }catch (Exception exception){
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
-/*    @PutMapping("/update/chat")
-    public ResponseEntity<Object> UpdateChatByUserID(@RequestHeader long userID, @RequestBody List<Chat> chat) {
-        System.out.println(userID);
-        System.out.println(chat.get(0).getQuestion());
-        userService.UpdateChatByUserID(userID, chat);
-        return new ResponseEntity(null, HttpStatus.OK);
-    }*/
 }
