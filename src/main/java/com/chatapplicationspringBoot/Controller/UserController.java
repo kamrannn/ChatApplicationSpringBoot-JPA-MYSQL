@@ -56,8 +56,6 @@ public class UserController {
         return new ResponseEntity<>("Kindly login first", HttpStatus.UNAUTHORIZED);
     }
 
-    //This API shows all the users
-
     /**
      * @Author "Kamran"
      * @Description "This api is listing all the users present in the database"

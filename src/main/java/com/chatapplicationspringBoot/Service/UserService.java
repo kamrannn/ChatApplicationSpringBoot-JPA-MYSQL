@@ -39,7 +39,7 @@ public class UserService {
                 return new ResponseEntity<>("You are entering wrong email or Password", HttpStatus.NOT_FOUND);
             }
         } catch (Exception exception) {
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
