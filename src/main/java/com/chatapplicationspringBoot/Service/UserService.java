@@ -3,20 +3,21 @@ package com.chatapplicationspringBoot.Service;
 import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Repository.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.xml.ws.Response;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 public class UserService {
+    private static final Logger LOG =  LogManager.getLogger(UserService.class);
     // Autowired, Constructor is made
     private final UserRepository userRepository;
     public UserService(UserRepository userRepository) {
@@ -39,6 +40,7 @@ public class UserService {
                 return new ResponseEntity<>("You are entering wrong email or Password", HttpStatus.NOT_FOUND);
             }
         } catch (Exception exception) {
+            LOG.info("Exception: "+exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -57,6 +59,7 @@ public class UserService {
                     return new ResponseEntity<>(userList, HttpStatus.OK); //if data found
                 }
         } catch (Exception exception) {
+            LOG.info("Exception: "+exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -78,6 +81,7 @@ public class UserService {
             userRepository.save(user);
             return new ResponseEntity<>("User has been successfully Added", HttpStatus.OK);
         } catch (Exception e) {
+            LOG.info("Exception: "+e.getMessage());
             return new ResponseEntity<>("The user already exists", HttpStatus.CONFLICT);
         }
     }
@@ -108,6 +112,7 @@ public class UserService {
             userRepository.deleteById(id);
             return new ResponseEntity<>("User is successfully deleted", HttpStatus.OK);
         }catch (Exception e){
+            LOG.info("Exception: "+e.getMessage());
             return new ResponseEntity<>("This user doesn't exist in the database", HttpStatus.BAD_REQUEST);
         }
     }
@@ -122,11 +127,11 @@ public class UserService {
         try {
             userRepository.save(user);
             return new ResponseEntity<>("User has been successfully Updated", HttpStatus.OK);
-        } catch (NoSuchElementException e) {
+        } catch (Exception e) {
+            LOG.info("Exception: "+e.getMessage());
             return new ResponseEntity<>("User is not Updated", HttpStatus.BAD_REQUEST);
         }
     }
-
 
     /**
      * @Author "Kamran"
@@ -144,7 +149,7 @@ public class UserService {
                 chat.get(i).setQuestionDate(date);
                 chat.get(i).setAnswerDate(date);
             }
-            Optional<User> user = userRepository.findUsersById(userId);
+            Optional<User> user = userRepository.findUsersById(userId);//Getting the user object
             if(user.isPresent()){
                 List<Chat> userChats = user.get().getChats();
                 try{
@@ -154,6 +159,7 @@ public class UserService {
                     userRepository.save(user.get());
                     return new ResponseEntity<>("Chat has been successfully Added", HttpStatus.OK);
                 }catch (Exception e){
+                    LOG.info("Exception: "+e.getMessage());
                     return new ResponseEntity<>("Chat is not Added", HttpStatus.BAD_REQUEST);
                 }
             }
@@ -161,6 +167,7 @@ public class UserService {
                 return new ResponseEntity<>("User not found against this user ID", HttpStatus.NOT_FOUND);
             }
         }catch (Exception exception){
+            LOG.info("Exception: "+exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

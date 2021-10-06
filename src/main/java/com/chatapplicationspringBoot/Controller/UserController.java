@@ -4,6 +4,8 @@ import com.chatapplicationspringBoot.Model.Chat;
 import com.chatapplicationspringBoot.Model.User;
 import com.chatapplicationspringBoot.Service.UserService;
 import io.swagger.annotations.Api;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.Optional;
 @Api(value="User Operations - CRUD REST API's for the User")
 public class UserController {
     final UserService userService;
+    private static final Logger LOG =  LogManager.getLogger(UserController.class);
     //UserService constructor, used in place of Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -44,6 +47,7 @@ public class UserController {
      * @return
      */
     public boolean authorization(String token) {
+        LOG.info("Authorizing the user ");
         return UserController.token.equals(token);
     }
 
@@ -53,6 +57,7 @@ public class UserController {
      * @return
      */
     public ResponseEntity<Object> UnAuthorizeUser() {
+        LOG.info("Unauthorized user is trying to get access");
         return new ResponseEntity<>("Kindly login first", HttpStatus.UNAUTHORIZED);
     }
 
@@ -110,18 +115,14 @@ public class UserController {
     /**
      * @Author "Kamran"
      * @Description " This API updates the user by just giving certain ID all values should be updated otherwise other fields will be NULL"
-     * @param key1
+     * @param token
      * @param user
      * @return
      */
     @PutMapping("/update")
-    public ResponseEntity<Object> update(@RequestHeader("Authorization") String key1, @RequestBody User user) {
-        if (authorization(key1)) {
-            try {
-                return userService.updateUser(user);
-            } catch (Exception exception) {
-                return new ResponseEntity<>(exception.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+    public ResponseEntity<Object> UpdateUser(@RequestHeader("Authorization") String token, @RequestBody User user) {
+        if (authorization(token)) {
+            return userService.updateUser(user);
         } else {
             return UnAuthorizeUser() ;
         }
@@ -156,11 +157,12 @@ public class UserController {
      * @param id
      */
     @DeleteMapping("/delete")
-    public ResponseEntity<Object> delete(@RequestHeader("Authorization") String token, @RequestParam("delete") Long id) {
+    public ResponseEntity<Object> DeleteUser(@RequestHeader("Authorization") String token, @RequestParam("delete") Long id) {
         if (authorization(token)) {
             try{
                 return userService.deleteUser(id);
             }catch (Exception exception){
+                LOG.info("Exception: "+exception.getMessage());
                 return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
@@ -173,15 +175,16 @@ public class UserController {
     /**
      * @Author "Kamran"
      * @Description " This API is adding the chat with respect to User ID"
-     * @param userID
+     * @param userId
      * @param chat
      * @return
      */
     @PostMapping("/add/chat")
-    public ResponseEntity<Object> AddChatByUserID(@RequestHeader long userID, @RequestBody List<Chat> chat) {
+    public ResponseEntity<Object> AddChatByUserID(@RequestHeader long userId, @RequestBody List<Chat> chat) {
         try {
-            return userService.AddChatByUserID(userID, chat);
+            return userService.AddChatByUserID(userId, chat);
         }catch (Exception exception){
+            LOG.info("Exception: "+exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

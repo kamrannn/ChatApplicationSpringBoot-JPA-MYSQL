@@ -28,10 +28,12 @@ public class ChatController {
     private final static String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
     public boolean authorization(String userToken) {
+        LOG.info("User is successfully authorized");
         return token.equals(userToken);
     }
 
     public ResponseEntity<Object> UnAuthorizeUser() {
+        LOG.info("Unauthorized user is trying to get access");
         return new ResponseEntity<>("Kindly login first", HttpStatus.UNAUTHORIZED);
     }
 
@@ -44,12 +46,7 @@ public class ChatController {
     @GetMapping("")
     public ResponseEntity<Object> list(@RequestHeader("Authorization") String token) {
         if (authorization(token)) {
-            try{
-                List<Chat> chatList= chatService.ListAllChat();
-                return new ResponseEntity<>(chatList,HttpStatus.OK);
-            }catch (Exception e){
-                return new ResponseEntity<>("There is no data in chat table ",HttpStatus.NOT_FOUND);
-            }
+            return chatService.ListAllChat();
         } else {
             return UnAuthorizeUser();
         }
@@ -62,17 +59,10 @@ public class ChatController {
      * @param id
      * @return
      */
-    @GetMapping("/question/{id}")
+    @GetMapping("/chat/{id}")
     public ResponseEntity<Object> GetQuestion(@RequestHeader("Authorization") String token, @PathVariable Long id) {
-
         if (authorization(token)) {
-            try {
-                Chat chat = chatService.getChat(id);
-                return new ResponseEntity<>(chat, HttpStatus.OK);
-            } catch (NoSuchElementException e) {
-                LOG.error("NO chat Exists Against this Question ID: "+id,e.getMessage());
-                return new ResponseEntity<>("No chat exists against this ID",HttpStatus.NOT_FOUND);
-            }
+            return chatService.getChat(id);
         }else {
             return UnAuthorizeUser();
         }
@@ -85,42 +75,11 @@ public class ChatController {
      * @param id
      * @return
      */
-    @GetMapping("/question")
-    public ResponseEntity<Object> GetById(@RequestHeader("Authorization") String token,@RequestParam("question") Long id){
-
+    @GetMapping("/chat")
+    public ResponseEntity<Object> GetById(@RequestHeader("Authorization") String token,@RequestParam("chatId") Long id){
         if (authorization(token)) {
-            try {
-                Chat chat = chatService.getChat(id);
-                return new ResponseEntity<>(chat, HttpStatus.OK);
-            } catch (NoSuchElementException e) {
-                LOG.error("NO chat Exists Against this Question ID: "+id,e.getMessage());
-                return new ResponseEntity<>("There is no data available for this chat ID", HttpStatus.NOT_FOUND);
-            }
-        }
-        else{
-            return UnAuthorizeUser();
-        }
-    }
-
-    /**
-     * @author : Kamran Abbasi
-     * @description : This API just add the chat to the database
-     * @param token
-     * @param chat
-     * @return
-     */
-    @PostMapping("/add")
-    public ResponseEntity<Object> Add(@RequestHeader("Authorization") String token, @RequestBody Chat chat) {
-        if (authorization(token)) {
-            try{
-                chatService.saveChat(chat);
-                return new ResponseEntity<>("Chat has been successfully added",HttpStatus.OK);
-            } catch (Exception e) {
-                LOG.error("The Question already Exists: "+chat.getQuestion(), e.getMessage());
-                return new ResponseEntity<>("The Question ("+chat.getQuestion()+") already Exists, kindly change the question", HttpStatus.CONFLICT);
-            }
-        }
-        else{
+            return chatService.getChat(id);
+        }else {
             return UnAuthorizeUser();
         }
     }
@@ -128,17 +87,16 @@ public class ChatController {
     /**
      * @author Kamran Abbasi
      * @description This API updates the chat by passing the Chat object
-     * @param chat
+     * @param chats
      * @return
      */
     @PutMapping("/update")
-    public ResponseEntity<Object> Update(@RequestBody Chat chat) {
-        try{
-            chatService.updateChat(chat);
-            return new ResponseEntity<>("The Chat has been updated",HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            LOG.error("The Chat is not updated because of: "+e.getMessage());
-            return new ResponseEntity<>("The Chat is not updated",HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> UpdateChat(@RequestHeader("Authorization") String token, @RequestBody List<Chat> chats) {
+        if(authorization(token)){
+            return chatService.updateChat(chats);
+        }
+        else {
+            return UnAuthorizeUser();
         }
     }
 
@@ -149,18 +107,28 @@ public class ChatController {
      * @param token
      */
     @DeleteMapping("/delete/{id}")
-    public void delete( @PathVariable Long id,@RequestHeader("Authorization") String token) {
-
+    public ResponseEntity<Object> delete( @PathVariable Long id,@RequestHeader("Authorization") String token) {
         if (authorization(token)) {
-            chatService.deleteChat(id);
+            return chatService.deleteChat(id);
+        }
+        else{
+            return UnAuthorizeUser();
         }
     }
 
-    //This API deletes certain chat using request parameter
+    /**
+     * @Author "Kamran"
+     * @Description "This API deletes certain chat using request parameter"
+     * @param token
+     * @param id
+     */
     @DeleteMapping("/delete")
-    public void delete(@RequestHeader("Authorization") String token,@RequestParam ("delete") Long id) {
+    public ResponseEntity<Object> delete(@RequestHeader("Authorization") String token,@RequestParam ("delete") Long id) {
         if (authorization(token)) {
-            chatService.deleteChat(id);
+            return chatService.deleteChat(id);
+        }
+        else{
+            return UnAuthorizeUser();
         }
     }
 }

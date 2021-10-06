@@ -12,4 +12,7 @@ public class Category {
     private long id;
     @Column(nullable = false,unique = true)
     private String name;
+
+    public Category() {
+    }
 }
