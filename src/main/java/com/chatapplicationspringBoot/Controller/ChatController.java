@@ -24,14 +24,28 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    //key value for the authorization
+    /**
+     * @Author "Kamran"
+     * @Description "key value for the authorization of the "
+     */
     private final static String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
+    /**
+     * @Author "Kamran"
+     * @Description "This method is authorizing the user to get access to the API"
+     * @param userToken
+     * @return
+     */
     public boolean authorization(String userToken) {
         LOG.info("User is successfully authorized");
         return token.equals(userToken);
     }
 
+    /**
+     * @Author "Kamran"
+     * @description "We are having this method to return the un authorize user.
+     * @return "Response if the user is not authorized"
+     */
     public ResponseEntity<Object> UnAuthorizeUser() {
         LOG.info("Unauthorized user is trying to get access");
         return new ResponseEntity<>("Kindly login first", HttpStatus.UNAUTHORIZED);
