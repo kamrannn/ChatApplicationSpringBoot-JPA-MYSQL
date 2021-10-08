@@ -171,4 +171,27 @@ public class UserService {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public ResponseEntity<Object> ChatOfSingleUser(long userId) {
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try{
+            Optional<User> user = userRepository.findUsersById(userId);//Getting the user object
+            if(user.isPresent()){
+                List<Chat> userChats = user.get().getChats();
+                if(userChats.isEmpty()){
+                    return new ResponseEntity<>("There are no chats against this user", HttpStatus.NOT_FOUND);
+                }
+                else{
+                    return new ResponseEntity<>(userChats, HttpStatus.FOUND);
+                }
+            }
+            else{
+                return new ResponseEntity<>("User not found against this user ID", HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception exception){
+            LOG.info("Exception: "+exception.getMessage());
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

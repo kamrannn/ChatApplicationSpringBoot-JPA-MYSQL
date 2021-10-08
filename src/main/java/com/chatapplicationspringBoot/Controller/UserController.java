@@ -188,4 +188,14 @@ public class UserController {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/user/details")
+    public ResponseEntity<Object> ChatOfSingleUser(@RequestParam("userId") long userId) {
+        try {
+            return userService.ChatOfSingleUser(userId);
+        }catch (Exception exception){
+            LOG.info("Exception: "+exception.getMessage());
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
