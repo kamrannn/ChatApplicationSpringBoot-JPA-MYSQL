@@ -4,7 +4,7 @@ import com.chatapplicationspringBoot.model.entity.Category;
 import com.chatapplicationspringBoot.model.entity.Chat;
 import com.chatapplicationspringBoot.model.entity.User;
 import com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserChatsAndCategories;
-import com.chatapplicationspringBoot.model.interfaces.databaseDTO.UserDTO;
+import com.chatapplicationspringBoot.model.interfaces.databaseDTO.UserChatAndCategoriesDB;
 import com.chatapplicationspringBoot.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -186,27 +186,27 @@ public class UserService {
     in both of them then we will return a message of not having that user's chat and categories."
      */
     public ResponseEntity<Object> GetChatAndCategories(long userId) {
-        UserDTO userDatabaseDTO = new UserDTO();
+        UserChatAndCategoriesDB userDatabaseDTO = new UserChatAndCategoriesDB(); //Using this object to store the list from our own database
         try {
-            Optional<User> user = userRepository.findUsersById(userId);//Getting the user object
-            if (user.isPresent()) {
-                List<Chat> userChats = user.get().getChats();
+            Optional<User> user = userRepository.findUsersById(userId);//finding the user in the database with ID
+            if (user.isPresent()) { //checking if the user is present or not
+                List<Chat> userChats = user.get().getChats(); //getting that specific user chat
                 userDatabaseDTO.setChatList(userChats);
-                List<Category> userCategoriesList = user.get().getCategories();
+                List<Category> userCategoriesList = user.get().getCategories(); //getting that specific user categories
                 userDatabaseDTO.setCategoryList(userCategoriesList);
-
+                //if there is no data (both should be empty) in the users chats and categories list
                 if (userChats.isEmpty() && userCategoriesList.isEmpty()) {
                     return new ResponseEntity<>("There are no chats and categories against this user", HttpStatus.NOT_FOUND);
-                } else {
-                    return new ResponseEntity<>(userDatabaseDTO, HttpStatus.FOUND);
+                } else { //it will run even if one of the list is empty
+                    return new ResponseEntity<>(userDatabaseDTO, HttpStatus.FOUND); //if data found for the user
                 }
-            } else {
-                uri = new URI(baseUrl + userId);
+            } else { //If that user is not in our Database, checking 3rd party API through rest template
+                uri = new URI(baseUrl + userId); //url with user it, concatination is done with user id
                 LOG.info(uri);
-                httpHeaders.set("Authorization", "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
+                httpHeaders.set("Authorization", "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454"); //Authorization in the header
                 HttpEntity<Object> requestEntity = new HttpEntity<>(null, httpHeaders);
                 LOG.info(requestEntity);
-                UserChatsAndCategories userChatsAndCategories = new UserChatsAndCategories();
+                UserChatsAndCategories userChatsAndCategories = new UserChatsAndCategories(); //this is
                 RestTemplate restTemplate = new RestTemplate();
                 ResponseEntity<com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO> userDTOResponseEntity =
                         restTemplate.exchange(uri, HttpMethod.GET, requestEntity, com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO.class);
