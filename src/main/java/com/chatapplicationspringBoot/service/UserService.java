@@ -3,18 +3,18 @@ package com.chatapplicationspringBoot.service;
 import com.chatapplicationspringBoot.model.entity.Category;
 import com.chatapplicationspringBoot.model.entity.Chat;
 import com.chatapplicationspringBoot.model.entity.User;
-import com.chatapplicationspringBoot.model.interfaces.UserChatsAndCategories;
+import com.chatapplicationspringBoot.model.interfaces.UserDTO;
 import com.chatapplicationspringBoot.model.interfaces.UserDbDTO;
 import com.chatapplicationspringBoot.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +22,12 @@ import java.util.Optional;
 @Service
 public class UserService {
     private static final Logger LOG =  LogManager.getLogger(UserService.class);
+    HttpHeaders httpHeaders = new HttpHeaders();
+    final String baseUrl = "http://192.168.10.8:8080/user/";
+    URI uri;
     // Autowired, Constructor is made
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository) {
+    public UserService( UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -176,7 +179,14 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> ChatOfSingleUser(long userId) {
+    /**
+     * @Author "Kamran"
+     * @Description "Getting the chat list and categories list of a particular user
+        from our database and 3rd party Rest API"
+     * @param userId
+     * @return
+     */
+    public ResponseEntity<Object> GetChatAndCategories(long userId) {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         UserDbDTO userDbDTO = new UserDbDTO() ;
 
@@ -196,7 +206,16 @@ public class UserService {
                 }
             }
             else{
-                return new ResponseEntity<>("User not found against this user ID", HttpStatus.NOT_FOUND);
+                uri = new URI(baseUrl+userId);
+                httpHeaders.set("Authorization", "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
+                HttpEntity<Object> requestEntity = new HttpEntity<>(null, httpHeaders);
+
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<UserDTO> userDTOResponseEntity = restTemplate.exchange(uri, HttpMethod.GET, requestEntity, UserDTO.class);
+
+               /* String resourceUrl = "http://192.168.10.8:8080/user/"+userId;
+                ResponseEntity<UserDTO> userDTOResponseEntity = restTemplate.getForEntity(resourceUrl, UserDTO.class);*/
+                return new ResponseEntity<>(userDTOResponseEntity.getBody(), HttpStatus.FOUND);
             }
         }catch (Exception exception){
             LOG.info("Exception: "+exception.getMessage());

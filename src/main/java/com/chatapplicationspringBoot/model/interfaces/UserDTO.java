@@ -13,6 +13,6 @@ public class UserDTO {
     private String name;
     private String email;
 
-    List<CategoryDTO> userDTOList = new ArrayList<>();
-    List<ChatDTO> chatDTOList = new ArrayList<>();
+    List<CategoryDTO> categoryList = new ArrayList<>();
+    List<ChatDTO> chatList = new ArrayList<>();
 }
