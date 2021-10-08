@@ -1,8 +1,8 @@
-package com.chatapplicationspringBoot.Service;
+package com.chatapplicationspringBoot.service;
 
-import com.chatapplicationspringBoot.Model.Chat;
-import com.chatapplicationspringBoot.Model.User;
-import com.chatapplicationspringBoot.Repository.UserRepository;
+import com.chatapplicationspringBoot.model.entity.Chat;
+import com.chatapplicationspringBoot.model.entity.User;
+import com.chatapplicationspringBoot.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;

@@ -1,12 +1,9 @@
-package com.chatapplicationspringBoot.Service;
+package com.chatapplicationspringBoot.service;
 
-import com.chatapplicationspringBoot.Controller.CategoryController;
-import com.chatapplicationspringBoot.Model.Category;
-import com.chatapplicationspringBoot.Model.User;
-import com.chatapplicationspringBoot.Repository.CategoryRepository;
+import com.chatapplicationspringBoot.model.entity.Category;
+import com.chatapplicationspringBoot.repository.CategoryRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

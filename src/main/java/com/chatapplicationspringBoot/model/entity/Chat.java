@@ -1,4 +1,4 @@
-package com.chatapplicationspringBoot.Model;
+package com.chatapplicationspringBoot.model.entity;
 
 import lombok.Data;
 

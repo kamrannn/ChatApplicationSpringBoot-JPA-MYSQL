@@ -1,8 +1,8 @@
-package com.chatapplicationspringBoot.Service;
+package com.chatapplicationspringBoot.service;
 
-import com.chatapplicationspringBoot.Controller.ChatController;
-import com.chatapplicationspringBoot.Model.Chat;
-import com.chatapplicationspringBoot.Repository.ChatRepository;
+import com.chatapplicationspringBoot.controller.ChatController;
+import com.chatapplicationspringBoot.model.entity.Chat;
+import com.chatapplicationspringBoot.repository.ChatRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service

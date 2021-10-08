@@ -1,8 +1,8 @@
-package com.chatapplicationspringBoot.Controller;
+package com.chatapplicationspringBoot.controller;
 
-import com.chatapplicationspringBoot.Model.Chat;
-import com.chatapplicationspringBoot.Model.User;
-import com.chatapplicationspringBoot.Service.UserService;
+import com.chatapplicationspringBoot.model.entity.Chat;
+import com.chatapplicationspringBoot.model.entity.User;
+import com.chatapplicationspringBoot.service.UserService;
 import io.swagger.annotations.Api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @EnableSwagger2
 @RestController

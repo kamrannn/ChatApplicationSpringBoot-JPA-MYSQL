@@ -1,7 +1,7 @@
-package com.chatapplicationspringBoot.Controller;
+package com.chatapplicationspringBoot.controller;
 
-import com.chatapplicationspringBoot.Model.Category;
-import com.chatapplicationspringBoot.Service.CategoryService;
+import com.chatapplicationspringBoot.model.entity.Category;
+import com.chatapplicationspringBoot.service.CategoryService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
