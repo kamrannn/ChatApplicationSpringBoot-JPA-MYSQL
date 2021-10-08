@@ -1,7 +1,10 @@
 package com.chatapplicationspringBoot.service;
 
+import com.chatapplicationspringBoot.model.entity.Category;
 import com.chatapplicationspringBoot.model.entity.Chat;
 import com.chatapplicationspringBoot.model.entity.User;
+import com.chatapplicationspringBoot.model.interfaces.UserChatsAndCategories;
+import com.chatapplicationspringBoot.model.interfaces.UserDbDTO;
 import com.chatapplicationspringBoot.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -174,15 +178,21 @@ public class UserService {
 
     public ResponseEntity<Object> ChatOfSingleUser(long userId) {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        UserDbDTO userDbDTO = new UserDbDTO() ;
+
         try{
             Optional<User> user = userRepository.findUsersById(userId);//Getting the user object
             if(user.isPresent()){
                 List<Chat> userChats = user.get().getChats();
-                if(userChats.isEmpty()){
-                    return new ResponseEntity<>("There are no chats against this user", HttpStatus.NOT_FOUND);
+                userDbDTO.setChatList(userChats);
+                List<Category> userCategoriesList = user.get().getCategories();
+                userDbDTO.setCategoryList(userCategoriesList);
+
+                if(userChats.isEmpty()&&userCategoriesList.isEmpty()){
+                    return new ResponseEntity<>("There are no chats and categories against this user", HttpStatus.NOT_FOUND);
                 }
                 else{
-                    return new ResponseEntity<>(userChats, HttpStatus.FOUND);
+                    return new ResponseEntity<>(userDbDTO, HttpStatus.FOUND);
                 }
             }
             else{
