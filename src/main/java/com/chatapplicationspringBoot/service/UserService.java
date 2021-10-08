@@ -3,8 +3,8 @@ package com.chatapplicationspringBoot.service;
 import com.chatapplicationspringBoot.model.entity.Category;
 import com.chatapplicationspringBoot.model.entity.Chat;
 import com.chatapplicationspringBoot.model.entity.User;
-import com.chatapplicationspringBoot.model.interfaces.UserDTO;
-import com.chatapplicationspringBoot.model.interfaces.UserDbDTO;
+import com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserChatsAndCategories;
+import com.chatapplicationspringBoot.model.interfaces.databaseDTO.UserDTO;
 import com.chatapplicationspringBoot.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,22 +21,23 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private static final Logger LOG =  LogManager.getLogger(UserService.class);
+    private static final Logger LOG = LogManager.getLogger(UserService.class);
     HttpHeaders httpHeaders = new HttpHeaders();
     final String baseUrl = "http://192.168.10.8:8080/user/";
     URI uri;
     // Autowired, Constructor is made
     private final UserRepository userRepository;
-    public UserService( UserRepository userRepository) {
+
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     /**
-     * @Author "Kamran"
-     * @Description "Authenticating the user with email and password"
      * @param email
      * @param password
      * @return
+     * @Author "Kamran"
+     * @Description "Authenticating the user with email and password"
      */
     public ResponseEntity<Object> Authentication(String email, String password) {
         try {
@@ -47,39 +48,38 @@ public class UserService {
                 return new ResponseEntity<>("You are entering wrong email or Password", HttpStatus.NOT_FOUND);
             }
         } catch (Exception exception) {
-            LOG.info("Exception: "+exception.getMessage());
+            LOG.info("Exception: " + exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * @Author "Kamran"
      * @return "all users from Database"
+     * @Author "Kamran"
      */
     public ResponseEntity<Object> listAllUsers() {
         try {
-            List<User> userList =  userRepository.findAll();
-                if(userList.isEmpty()){
-                    return new ResponseEntity<>("No User exists in the database", HttpStatus.NOT_FOUND);
-                }
-                else{
-                    return new ResponseEntity<>(userList, HttpStatus.OK); //if data found
-                }
+            List<User> userList = userRepository.findAll();
+            if (userList.isEmpty()) {
+                return new ResponseEntity<>("No User exists in the database", HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(userList, HttpStatus.OK); //if data found
+            }
         } catch (Exception exception) {
-            LOG.info("Exception: "+exception.getMessage());
+            LOG.info("Exception: " + exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
+     * @param user
      * @Author "Kamran"
      * @Description "Save User into database by getting values from controller"
-     * @param user
      */
     public ResponseEntity<Object> saveUser(User user) {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        int size =  user.getChats().size();
-        for(int i=0;i<size;i++){
+        int size = user.getChats().size();
+        for (int i = 0; i < size; i++) {
             String date = formatter.format(new Date());
             user.getChats().get(i).setQuestionDate(date);
             user.getChats().get(i).setAnswerDate(date);
@@ -88,27 +88,26 @@ public class UserService {
             userRepository.save(user);
             return new ResponseEntity<>("User has been successfully Added", HttpStatus.OK);
         } catch (Exception e) {
-            LOG.info("Exception: "+e.getMessage());
+            LOG.info("Exception: " + e.getMessage());
             return new ResponseEntity<>("The user already exists", HttpStatus.CONFLICT);
         }
     }
 
     /**
-     * @Author "Kamran"
-     * @Description "Finding the User from database using userID"
      * @param id
      * @return
+     * @Author "Kamran"
+     * @Description "Finding the User from database using userID"
      */
     public ResponseEntity<Object> getUser(Long id) {
         try {
             Optional<User> user = userRepository.findById(id);
-            if (user.isPresent()){
-                return new ResponseEntity<>(user,HttpStatus.FOUND);
+            if (user.isPresent()) {
+                return new ResponseEntity<>(user, HttpStatus.FOUND);
+            } else {
+                return new ResponseEntity<>("User not found ", HttpStatus.NOT_FOUND);
             }
-            else{
-                return new ResponseEntity<>("User not found ",HttpStatus.NOT_FOUND);
-            }
-        }catch (Exception exception){
+        } catch (Exception exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -118,107 +117,107 @@ public class UserService {
         try {
             userRepository.deleteById(id);
             return new ResponseEntity<>("User is successfully deleted", HttpStatus.OK);
-        }catch (Exception e){
-            LOG.info("Exception: "+e.getMessage());
+        } catch (Exception e) {
+            LOG.info("Exception: " + e.getMessage());
             return new ResponseEntity<>("This user doesn't exist in the database", HttpStatus.BAD_REQUEST);
         }
     }
 
     /**
-     * @Author "Kamran"
-     * @Description "Updating the user with the user Object"
      * @param user
      * @return
+     * @Author "Kamran"
+     * @Description "Updating the user with the user Object"
      */
     public ResponseEntity<Object> updateUser(User user) {
         try {
             userRepository.save(user);
             return new ResponseEntity<>("User has been successfully Updated", HttpStatus.OK);
         } catch (Exception e) {
-            LOG.info("Exception: "+e.getMessage());
+            LOG.info("Exception: " + e.getMessage());
             return new ResponseEntity<>("User is not Updated", HttpStatus.BAD_REQUEST);
         }
     }
 
     /**
-     * @Author "Kamran"
-     * @Description "Adding the Chat with respect to User ID"
      * @param userId
      * @param chat
      * @return
+     * @Author "Kamran"
+     * @Description "Adding the Chat with respect to User ID"
      */
     public ResponseEntity<Object> AddChatByUserID(long userId, List<Chat> chat) {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        try{
-            int chatListSize =  chat.size();
-            for(int i=0;i<chatListSize;i++){
+        try {
+            int chatListSize = chat.size();
+            for (int i = 0; i < chatListSize; i++) {
                 String date = formatter.format(new Date());
                 chat.get(i).setQuestionDate(date);
                 chat.get(i).setAnswerDate(date);
             }
             Optional<User> user = userRepository.findUsersById(userId);//Getting the user object
-            if(user.isPresent()){
+            if (user.isPresent()) {
                 List<Chat> userChats = user.get().getChats();
-                try{
-                    for (Chat newChat:chat) {
+                try {
+                    for (Chat newChat : chat) {
                         userChats.add(newChat);
                     }
                     userRepository.save(user.get());
                     return new ResponseEntity<>("Chat has been successfully Added", HttpStatus.OK);
-                }catch (Exception e){
-                    LOG.info("Exception: "+e.getMessage());
+                } catch (Exception e) {
+                    LOG.info("Exception: " + e.getMessage());
                     return new ResponseEntity<>("Chat is not Added", HttpStatus.BAD_REQUEST);
                 }
-            }
-            else{
+            } else {
                 return new ResponseEntity<>("User not found against this user ID", HttpStatus.NOT_FOUND);
             }
-        }catch (Exception exception){
-            LOG.info("Exception: "+exception.getMessage());
+        } catch (Exception exception) {
+            LOG.info("Exception: " + exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * @Author "Kamran"
-     * @Description "Getting the chat list and categories list of a particular user
-        from our database and 3rd party Rest API"
      * @param userId
      * @return
+     * @Author "Kamran"
+     * @Description "Getting the chat and categories list of a particular user
+     from our database if available else checking from 3rd party Rest API, if that user don't exist
+    in both of them then we will return a message of not having that user's chat and categories."
      */
     public ResponseEntity<Object> GetChatAndCategories(long userId) {
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        UserDbDTO userDbDTO = new UserDbDTO() ;
-
-        try{
+        UserDTO userDatabaseDTO = new UserDTO();
+        try {
             Optional<User> user = userRepository.findUsersById(userId);//Getting the user object
-            if(user.isPresent()){
+            if (user.isPresent()) {
                 List<Chat> userChats = user.get().getChats();
-                userDbDTO.setChatList(userChats);
+                userDatabaseDTO.setChatList(userChats);
                 List<Category> userCategoriesList = user.get().getCategories();
-                userDbDTO.setCategoryList(userCategoriesList);
+                userDatabaseDTO.setCategoryList(userCategoriesList);
 
-                if(userChats.isEmpty()&&userCategoriesList.isEmpty()){
+                if (userChats.isEmpty() && userCategoriesList.isEmpty()) {
                     return new ResponseEntity<>("There are no chats and categories against this user", HttpStatus.NOT_FOUND);
+                } else {
+                    return new ResponseEntity<>(userDatabaseDTO, HttpStatus.FOUND);
                 }
-                else{
-                    return new ResponseEntity<>(userDbDTO, HttpStatus.FOUND);
-                }
-            }
-            else{
-                uri = new URI(baseUrl+userId);
+            } else {
+                uri = new URI(baseUrl + userId);
+                LOG.info(uri);
                 httpHeaders.set("Authorization", "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454");
                 HttpEntity<Object> requestEntity = new HttpEntity<>(null, httpHeaders);
-
+                LOG.info(requestEntity);
+                UserChatsAndCategories userChatsAndCategories = new UserChatsAndCategories();
                 RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<UserDTO> userDTOResponseEntity = restTemplate.exchange(uri, HttpMethod.GET, requestEntity, UserDTO.class);
+                ResponseEntity<com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO> userDTOResponseEntity =
+                        restTemplate.exchange(uri, HttpMethod.GET, requestEntity, com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO.class);
 
-               /* String resourceUrl = "http://192.168.10.8:8080/user/"+userId;
-                ResponseEntity<UserDTO> userDTOResponseEntity = restTemplate.getForEntity(resourceUrl, UserDTO.class);*/
-                return new ResponseEntity<>(userDTOResponseEntity.getBody(), HttpStatus.FOUND);
+                userChatsAndCategories.setUserCategoriesList(userDTOResponseEntity.getBody().getCategoryList());
+                userChatsAndCategories.setUserChatList(userDTOResponseEntity.getBody().getChatList());
+
+                return new ResponseEntity<>(userChatsAndCategories, HttpStatus.FOUND);
             }
-        }catch (Exception exception){
-            LOG.info("Exception: "+exception.getMessage());
+        } catch (Exception exception) {
+            LOG.info("Exception: " + exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
