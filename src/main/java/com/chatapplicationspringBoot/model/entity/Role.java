@@ -12,5 +12,6 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private long id;
     @Column(unique = true)
-    private String email; //variable to store the role name
+    private String name; //variable to store the role name
+    private String description;
 }

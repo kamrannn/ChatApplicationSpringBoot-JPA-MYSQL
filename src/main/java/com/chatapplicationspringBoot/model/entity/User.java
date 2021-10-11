@@ -29,4 +29,7 @@ public class User {
 
     @ManyToMany(targetEntity = Category.class,fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Category> categories = new ArrayList<>();
+
+    @ManyToMany(targetEntity = Role.class,fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private List<Role> roles = new ArrayList<>();
 }
