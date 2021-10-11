@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleService {
@@ -40,6 +41,21 @@ public class RoleService {
             }catch (Exception e){
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
+        }
+    }
+
+    public ResponseEntity<Object> DeleteRoleById(Long roleId){
+        Optional<Role> role = roleRepository.findById(roleId);
+        if(role.isPresent()){
+            try{
+                roleRepository.deleteById(roleId);
+                return new ResponseEntity<>("Role has been successfully deleted", HttpStatus.OK);
+            }catch (Exception e){
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        }
+        else {
+            return new ResponseEntity<>("There is no role against this id", HttpStatus.NOT_FOUND);
         }
     }
 }
