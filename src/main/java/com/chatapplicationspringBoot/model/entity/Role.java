@@ -11,10 +11,10 @@ import java.util.List;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private long id;
+    private long id; //variable to store the role id
     @Column(unique = true)
     private String name; //variable to store the role name
-    private String description;
+    private String description; //variable to store the role description
 
     @ManyToMany(targetEntity = Permission.class,fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Permission> permissions = new ArrayList<>();

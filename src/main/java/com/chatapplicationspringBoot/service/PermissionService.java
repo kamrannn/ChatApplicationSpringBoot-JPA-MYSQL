@@ -1,8 +1,9 @@
 package com.chatapplicationspringBoot.service;
 
 import com.chatapplicationspringBoot.model.entity.Permission;
-import com.chatapplicationspringBoot.model.entity.Role;
 import com.chatapplicationspringBoot.repository.PermissionRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,18 @@ import java.util.Optional;
 
 @Service
 public class PermissionService {
+    private static final Logger LOG =  LogManager.getLogger(CategoryService.class);
     PermissionRepository permissionRepository;
 
     public PermissionService(PermissionRepository permissionRepository) {
         this.permissionRepository = permissionRepository;
     }
 
+    /**
+     * @Author "Kamran"
+     * @Description "This method is listing all the permissions from the database"
+     * @return
+     */
     public ResponseEntity<Object> ListAllPermissions(){
         try{
             List<Permission> permissionList = permissionRepository.findAll();
@@ -28,6 +35,7 @@ public class PermissionService {
                 return new ResponseEntity<>(permissionList, HttpStatus.FOUND);
             }
         }catch (Exception e){
+            LOG.info("Error: "+ e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -44,6 +52,7 @@ public class PermissionService {
                 }
                 return new ResponseEntity<>("Permission has been successfully Added", HttpStatus.OK);
             }catch (Exception e){
+                LOG.info("Error: "+ e.getMessage());
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
         }
@@ -56,6 +65,7 @@ public class PermissionService {
                 permissionRepository.deleteById(permissionId);
                 return new ResponseEntity<>("Permission has been successfully deleted", HttpStatus.OK);
             }catch (Exception e){
+                LOG.info("Error: "+ e.getMessage());
                 return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
         }

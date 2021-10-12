@@ -63,7 +63,8 @@ public class CategoryService {
     }
 
     /**
-     *
+     * @Author "Kamran"
+     * @Description "this method is deleting the category by taking category id"
      * @param id
      * @return
      */

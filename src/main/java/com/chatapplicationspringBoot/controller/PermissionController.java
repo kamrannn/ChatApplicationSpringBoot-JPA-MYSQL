@@ -20,18 +20,35 @@ public class PermissionController {
         this.permissionService = permissionService;
     }
 
+    /**
+     * @Author "Kamran"
+     * @Description "This method is listing all the permissions from the database"
+     * @return
+     */
     @GetMapping("/list")
     public ResponseEntity<Object> ListAllPermissions(){
             return permissionService.ListAllPermissions();
     }
 
+    /**
+     * @Author "Kamran"
+     * @Description "This method is Adding the permissions in the database"
+     * @param permission
+     * @return
+     */
     @PostMapping("/add")
     public ResponseEntity<Object> AddNewPermission( @RequestBody List<Permission> permission) {
                 return permissionService.AddNewPermission(permission);
     }
 
+    /**
+     * @Author "Kamran"
+     * @Description "This method is deleting the role by using role id"
+     * @param id
+     * @return
+     */
     @DeleteMapping("/delete")
-    public ResponseEntity<Object> DeleteRoleById(@RequestParam("id")  Long id){
+    public ResponseEntity<Object> DeletePermissionById(@RequestParam("id")  Long id){
             return permissionService.DeletePermissionById(id);
     }
 }
