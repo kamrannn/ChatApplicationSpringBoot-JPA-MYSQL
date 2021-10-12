@@ -40,14 +40,14 @@ public class CategoryController {
      */
     public ResponseEntity<Object> UnAuthorizeUser() {
         LOG.info("Error: Unauthorized User");
-        return new ResponseEntity<>("Kindly login first", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Kindly do the authorization first", HttpStatus.UNAUTHORIZED);
     }
 
     /**
      * @Author "Kamran"
      * @return all the list of categories
      */
-    @GetMapping("/all")
+    @GetMapping("/list")
     public ResponseEntity<Object> ListAllCategories(@RequestHeader("Authorization") String token) {
         if(Authorization(token)){
             return categoryService.ListAllCategories();
@@ -58,8 +58,6 @@ public class CategoryController {
         }
     }
 
-    //This API just add the user
-
     /**
      * @Author "Kamran"
      * @Description "This API just adds the category in the database"
@@ -69,7 +67,7 @@ public class CategoryController {
     @PostMapping("/add")
     public ResponseEntity<Object> AddCategory( @RequestBody List<Category> categories) {
         if(Authorization(token)){
-            return categoryService.saveCategory(categories);
+            return categoryService.AddCategory(categories);
         }
         else {
             return UnAuthorizeUser();
@@ -83,7 +81,7 @@ public class CategoryController {
      * @return
      */
     @DeleteMapping("/delete")
-    public ResponseEntity<Object> DeleteUser(@RequestHeader("Authorization") String token, @RequestParam("delete") Long id) {
+    public ResponseEntity<Object> DeleteCategory(@RequestHeader("Authorization") String token, @RequestParam("delete") Long id) {
             if(Authorization(token)){
                 return categoryService.DeleteCategory(id);
             }
@@ -96,14 +94,14 @@ public class CategoryController {
      * @Author "Kamran"
      * @Description
      * @param token
-     * @param categories
+     * @param category
      * @return
      */
     @PutMapping("/update")
-    public ResponseEntity<Object> UpdateCategory(@RequestHeader("Authorization") String token,@RequestBody  List<Category> categories) {
+    public ResponseEntity<Object> UpdateCategory(@RequestHeader("Authorization") String token,@RequestBody Category category) {
         if (Authorization(token)) {
             try {
-                return categoryService.saveCategory(categories);
+                return categoryService.updateCategory(category);
             } catch (Exception exception) {
                 LOG.info("Error: "+ exception.getMessage());
                 return new ResponseEntity<>(exception.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);

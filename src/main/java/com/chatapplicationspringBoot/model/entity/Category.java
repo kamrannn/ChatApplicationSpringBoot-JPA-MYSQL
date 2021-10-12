@@ -6,13 +6,18 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "t_category")
+/**
+ * @Author "Kamran"
+ * @Description "Category class to store the categories properties"
+ * @CreatedDate "10-12-2021"
+ */
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(nullable = false,unique = true)
     private String name;
-
-    public Category() {
-    }
+    private String createDate; // variable to store the date when category will be edited/updated
+    private String updateDate; // variable to store the date when category will be edited/updated
+    private boolean status;
 }

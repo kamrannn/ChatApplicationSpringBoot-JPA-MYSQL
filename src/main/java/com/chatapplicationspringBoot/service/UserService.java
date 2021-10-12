@@ -33,8 +33,8 @@ public class UserService {
     }
 
     /**
-     * @param email
-     * @param password
+     * @param email "taking email from the user"
+     * @param password "taking password from the user"
      * @return
      * @Author "Kamran"
      * @Description "Authenticating the user with email and password"
@@ -59,7 +59,7 @@ public class UserService {
      */
     public ResponseEntity<Object> listAllUsers() {
         try {
-            List<User> userList = userRepository.findAll();
+            List<User> userList = userRepository.findAllByStatus(true);
             if (userList.isEmpty()) {
                 return new ResponseEntity<>("No User exists in the database", HttpStatus.NOT_FOUND);
             } else {
@@ -77,15 +77,16 @@ public class UserService {
      * @Description "Save User into database by getting values from controller"
      */
     public ResponseEntity<Object> saveUser(User user) {
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String date = formatter.format(new Date());
         int size = user.getChats().size();
         for (int i = 0; i < size; i++) {
-            String date = formatter.format(new Date());
-            user.getChats().get(i).setQuestionDate(date);
-            user.getChats().get(i).setAnswerDate(date);
+            user.getChats().get(i).setCreateDate(date); //setting chats creation date
         }
+        user.setStatus(true); //the user is active in the start
+        user.setCreateDate(date); //setting the user creation date
         try {
-            userRepository.save(user);
+            userRepository.save(user); //saving the user in the database
             return new ResponseEntity<>("User has been successfully Added", HttpStatus.OK);
         } catch (Exception e) {
             LOG.info("Exception: " + e.getMessage());
@@ -115,6 +116,11 @@ public class UserService {
     //Delete user from db by using user ID
     public ResponseEntity<Object> deleteUser(Long id) {
         try {
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String date = formatter.format(new Date());
+            Optional<User> user = userRepository.findUsersById(id);
+            user.get().setUpdateDate(date);
+            user.get().setStatus(false);
             userRepository.deleteById(id);
             return new ResponseEntity<>("User is successfully deleted", HttpStatus.OK);
         } catch (Exception e) {
@@ -131,6 +137,9 @@ public class UserService {
      */
     public ResponseEntity<Object> updateUser(User user) {
         try {
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String date = formatter.format(new Date());
+            user.setUpdateDate(date);
             userRepository.save(user);
             return new ResponseEntity<>("User has been successfully Updated", HttpStatus.OK);
         } catch (Exception e) {
@@ -152,8 +161,7 @@ public class UserService {
             int chatListSize = chat.size();
             for (int i = 0; i < chatListSize; i++) {
                 String date = formatter.format(new Date());
-                chat.get(i).setQuestionDate(date);
-                chat.get(i).setAnswerDate(date);
+                chat.get(i).setCreateDate(date);
             }
             Optional<User> user = userRepository.findUsersById(userId);//Getting the user object
             if (user.isPresent()) {

@@ -1,13 +1,19 @@
 package com.chatapplicationspringBoot.service;
 
 import com.chatapplicationspringBoot.model.entity.Category;
+import com.chatapplicationspringBoot.model.entity.User;
 import com.chatapplicationspringBoot.repository.CategoryRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -25,7 +31,7 @@ public class CategoryService {
      */
     public ResponseEntity<Object> ListAllCategories(){
         try{
-            List<Category> categoryList =categoryRepository.findAll();
+            List<Category> categoryList =categoryRepository.findAllByStatus(true);
             if(categoryList.isEmpty()){
                 return new ResponseEntity<>("There are no categories in the database", HttpStatus.NOT_FOUND);
             }
@@ -44,8 +50,11 @@ public class CategoryService {
      * @param categories
      * @return
      */
-    public ResponseEntity<Object> saveCategory(List<Category> categories) {
+    public ResponseEntity<Object> AddCategory(List<Category> categories) {
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String date = formatter.format(new Date());
         int listSize = categories.size();
+
         for(int i=0;i<listSize;i++){
             if(categories.get(i).getName().trim().isEmpty()){
                 return new ResponseEntity<>("You are entering the null values", HttpStatus.BAD_REQUEST);
@@ -53,7 +62,15 @@ public class CategoryService {
         }
         try {
             for (Category newCategory : categories) {
-                categoryRepository.save(newCategory);
+                Category category = categoryRepository.findByName(newCategory.getName());
+                if(null!=category){
+                    category.setStatus(true);
+                    updateCategory(category);
+                }else {
+                    newCategory.setCreateDate(date);
+                    newCategory.setStatus(true);
+                    categoryRepository.save(newCategory);
+                }
             }
             return new ResponseEntity<>("Categories has been successfully added", HttpStatus.OK);
         } catch (Exception e) {
@@ -70,11 +87,36 @@ public class CategoryService {
      */
     public ResponseEntity<Object> DeleteCategory(Long id) {
         try {
-            categoryRepository.deleteById(id);
+            Optional<Category> category = categoryRepository.findById(id);
+            if(category.isPresent()){
+                category.get().setStatus(false);
+                categoryRepository.save(category.get());
+            }
+//            categoryRepository.deleteById(id);
             return new ResponseEntity<>("Category is successfully deleted", HttpStatus.OK);
         }catch (Exception exception){
             LOG.info("Error: "+ exception.getMessage());
             return new ResponseEntity<>("This category doesn't exist in the database", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * @Author "Kamran"
+     * @Description "Updating the categories by category ID"
+     * @param category
+     * @return
+     */
+    public ResponseEntity<Object> updateCategory(Category category) {
+        try {
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String date = formatter.format(new Date());
+            category.setUpdateDate(date);
+            category.setStatus(true);
+            categoryRepository.save(category);
+            return new ResponseEntity<>("Category has been successfully Updated", HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.info("Exception: " + e.getMessage());
+            return new ResponseEntity<>("Category is not Updated", HttpStatus.BAD_REQUEST);
         }
     }
 }
