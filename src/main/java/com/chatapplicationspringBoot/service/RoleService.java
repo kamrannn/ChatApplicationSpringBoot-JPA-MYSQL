@@ -1,5 +1,6 @@
 package com.chatapplicationspringBoot.service;
 
+import com.chatapplicationspringBoot.model.entity.Permission;
 import com.chatapplicationspringBoot.model.entity.Role;
 import com.chatapplicationspringBoot.repository.RoleRepository;
 import org.apache.logging.log4j.LogManager;
@@ -7,6 +8,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +31,8 @@ public class RoleService {
      */
     public ResponseEntity<Object> ListAllRoles(){
         try{
-            List<Role> roleList = roleRepository.findAll();
+//            List<Role> roleList = roleRepository.findAllByStatus(true);
+            List<Role> roleList = roleRepository.findAllActiveRolesAndPermissions();
             if(roleList.isEmpty()){
                 return new ResponseEntity<>("There are no roles in the Database", HttpStatus.NOT_FOUND);
             }
@@ -45,13 +51,29 @@ public class RoleService {
      * @param role
      * @return
      */
-    public ResponseEntity<Object> AddNewRole(Role role){
+    public ResponseEntity<Object> AddNewRole(List<Role> role){
         if(null==role){
             return new ResponseEntity<>("You are entering null values", HttpStatus.BAD_REQUEST);
         }
         else {
             try{
-                roleRepository.save(role);
+                DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                String date = formatter.format(new Date());
+                for (Role newRole: role
+                ) {
+                    List<Role> existingRole = roleRepository.findByName(newRole.getName());
+                    if(!existingRole.isEmpty()){
+                        for (Role changeRoleStatus: existingRole
+                        ) {
+                            changeRoleStatus.setStatus(true);
+                        }
+                        updateRole(existingRole);
+                    }else {
+                        newRole.setCreateDate(date);
+                        newRole.setStatus(true);
+                        roleRepository.save(newRole);
+                    }
+                }
                 return new ResponseEntity<>("Role has been successfully Added", HttpStatus.OK);
             }catch (Exception e){
                 LOG.info("Error: "+ e.getMessage());
@@ -71,6 +93,11 @@ public class RoleService {
         if(role.isPresent()){
             try{
                 roleRepository.deleteById(roleId);
+                DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                String date = formatter.format(new Date());
+                role.get().setStatus(false);
+                role.get().setUpdateDate(date);
+                roleRepository.save(role.get());
                 return new ResponseEntity<>("Role has been successfully deleted", HttpStatus.OK);
             }catch (Exception e){
                 LOG.info("Error: "+ e.getMessage());
@@ -79,6 +106,23 @@ public class RoleService {
         }
         else {
             return new ResponseEntity<>("There is no role against this id", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> updateRole(List<Role> roleList) {
+        try {
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String date = formatter.format(new Date());
+            for (Role updatedRoles:roleList
+            ) {
+                updatedRoles.setUpdateDate(date);
+                updatedRoles.setStatus(true);
+                roleRepository.save(updatedRoles);
+            }
+            return new ResponseEntity<>("Roles has been successfully Updated", HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.info("Exception: " + e.getMessage());
+            return new ResponseEntity<>("Roles are not Updated", HttpStatus.BAD_REQUEST);
         }
     }
 }

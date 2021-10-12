@@ -23,6 +23,6 @@ public class Role {
     private String createDate; //variable to store the creation date of permission
     private String updateDate; // variable to store the date when role will be edited/updated
     private boolean status;
-    @ManyToMany(targetEntity = Permission.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Permission.class,fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Permission> permissions = new ArrayList<>();
 }

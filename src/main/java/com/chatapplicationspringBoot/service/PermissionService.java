@@ -36,7 +36,7 @@ public class PermissionService {
                 return new ResponseEntity<>("There are no permissions in the Database", HttpStatus.NOT_FOUND);
             }
             else{
-                return new ResponseEntity<>(permissionList, HttpStatus.FOUND);
+                return new ResponseEntity<>(permissionList, HttpStatus.OK);
             }
         }catch (Exception e){
             LOG.info("Error: "+ e.getMessage());
