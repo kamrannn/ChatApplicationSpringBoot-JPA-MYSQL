@@ -2,6 +2,7 @@ package com.chatapplicationspringBoot.service;
 
 import com.chatapplicationspringBoot.model.entity.Category;
 import com.chatapplicationspringBoot.model.entity.Chat;
+import com.chatapplicationspringBoot.model.entity.Sms;
 import com.chatapplicationspringBoot.model.entity.User;
 import com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserChatsAndCategories;
 import com.chatapplicationspringBoot.model.interfaces.databaseDTO.UserChatAndCategoriesDB;
@@ -25,7 +26,7 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final String ACCOUNT_SID ="AC899fa2ea88ed71b93e716ffb0135a969";
-    private final String AUTH_TOKEN = "c185984f543eb96f17b65638b8393f99";
+    private final String AUTH_TOKEN = "913b0ef3069e47be4476c74ac680c7a3";
     private final String FROM_NUMBER = "+17242515324";
 
     private static final Logger LOG = LogManager.getLogger(UserService.class);
@@ -237,18 +238,30 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> SendSms(long id, String userMessage){
-
-        User user = userRepository.getById(id);
-        if(null==user){
-            return new ResponseEntity<>("There is no user exists against this id",HttpStatus.BAD_REQUEST);
+    /**
+     * @Author "Kamran"
+     * @Description "using this method to send sms to the specific user"
+     * @CreatedDate "10-13-2021"
+     * @param id
+     * @param sms
+     * @return
+     */
+    public ResponseEntity<Object> SendSms(long id, Sms sms){
+        try{
+            User user = userRepository.getById(id);
+            if(null==user){
+                return new ResponseEntity<>("There is no user exists against this id",HttpStatus.BAD_REQUEST);
+            }
+            else{
+                Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+                Message message = Message.creator(new PhoneNumber(user.getPhoneNo()), new PhoneNumber(FROM_NUMBER), sms.getMessage())
+                        .create();
+                System.out.println("here is my id:"+message.getSid());// Unique resource ID created to manage this transaction
+                return new ResponseEntity<>("The message has been successfully sent to: "+user.getFirstName(),HttpStatus.OK);
+            }
+        }catch (Exception e){
+            LOG.info("Exception: "+ e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        else{
-            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-            Message message = Message.creator(new PhoneNumber("+923125153352"), new PhoneNumber(FROM_NUMBER), userMessage)
-                    .create();
-            System.out.println("here is my id:"+message.getSid());// Unique resource ID created to manage this transaction
-        }
-        return new ResponseEntity<>("",HttpStatus.OK);
     }
 }

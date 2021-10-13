@@ -1,6 +1,7 @@
 package com.chatapplicationspringBoot.controller;
 
 import com.chatapplicationspringBoot.model.entity.Chat;
+import com.chatapplicationspringBoot.model.entity.Sms;
 import com.chatapplicationspringBoot.model.entity.User;
 import com.chatapplicationspringBoot.service.UserService;
 import io.swagger.annotations.Api;
@@ -198,13 +199,25 @@ public class UserController {
         }
     }
 
+    /**
+     * @Author "Kamran"
+     * @param id
+     * @param sms
+     * @param token
+     * @return
+     */
     @PostMapping("/sms")
-    public ResponseEntity<Object> SendSms(@RequestHeader long id, @RequestBody String message) {
-        try {
-            return userService.SendSms(id, message);
-        }catch (Exception exception){
-            LOG.info("Exception: "+exception.getMessage());
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<Object> SendSms(@RequestHeader("Authorization") String token,@RequestHeader long id, @RequestBody Sms sms) {
+        if(authorization(token)){
+            try {
+                return userService.SendSms(id, sms);
+            }catch (Exception exception){
+                LOG.info("Exception: "+exception.getMessage());
+                return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        else{
+            return UnAuthorizeUser();
         }
     }
 }

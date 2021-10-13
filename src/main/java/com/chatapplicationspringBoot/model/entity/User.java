@@ -28,6 +28,7 @@ public class User {
     private String password; //variable to store the User Password
     private String createDate; // variable to store the user when question will be created
     private String updateDate; // variable to store the date when user will be edited/updated
+    private String phoneNo; // variable to store the date when user will be edited/updated
     private boolean status; //variable to store delete status of the permission
 
     @OneToMany(targetEntity = Chat.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -1,31 +1,33 @@
-2021-10-13 17:23:27,685 INFO o.s.b.StartupInfoLogger [main] Starting ChatApplicationSpringBootApplication using Java 1.8.0_73 on LTI-TRAINING-05 with PID 12200 (F:\Development\ChatApplicationSpringBoot\target\classes started by kamranabbasi in F:\Development\ChatApplicationSpringBoot)
-2021-10-13 17:23:27,700 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
-2021-10-13 17:23:28,935 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2021-10-13 17:23:29,044 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 94 ms. Found 5 JPA repository interfaces.
-2021-10-13 17:23:29,716 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
-2021-10-13 17:23:29,732 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
-2021-10-13 17:23:29,732 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
-2021-10-13 17:23:29,732 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.53]
-2021-10-13 17:23:29,966 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
-2021-10-13 17:23:29,966 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2141 ms
-2021-10-13 17:23:30,153 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-10-13 17:23:30,325 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.32.Final
-2021-10-13 17:23:30,466 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-2021-10-13 17:23:30,591 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
-2021-10-13 17:23:30,966 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
-2021-10-13 17:23:30,981 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
-2021-10-13 17:23:32,278 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-10-13 17:23:32,278 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-10-13 17:23:33,169 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-10-13 17:23:33,856 WARN o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration [main] Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
-2021-10-13 17:23:33,950 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
-2021-10-13 17:23:33,981 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
-2021-10-13 17:23:33,981 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
-2021-10-13 17:23:33,997 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
-2021-10-13 17:23:34,013 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
-2021-10-13 17:23:34,341 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_1
-2021-10-13 17:23:34,434 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: DeleteUserUsingDELETE_1
-2021-10-13 17:23:34,528 INFO o.s.b.StartupInfoLogger [main] Started ChatApplicationSpringBootApplication in 8.13 seconds (JVM running for 11.54)
-2021-10-13 17:23:37,167 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2021-10-13 17:23:37,167 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
-2021-10-13 17:23:37,167 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 0 ms
+2021-10-13 18:34:12,765 INFO o.s.b.StartupInfoLogger [main] Starting ChatApplicationSpringBootApplication using Java 1.8.0_73 on LTI-TRAINING-05 with PID 11624 (F:\Development\ChatApplicationSpringBoot\target\classes started by kamranabbasi in F:\Development\ChatApplicationSpringBoot)
+2021-10-13 18:34:12,812 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-10-13 18:34:15,063 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-10-13 18:34:15,188 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 103 ms. Found 5 JPA repository interfaces.
+2021-10-13 18:34:16,563 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2021-10-13 18:34:16,579 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 18:34:16,579 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2021-10-13 18:34:16,579 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.53]
+2021-10-13 18:34:16,797 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2021-10-13 18:34:16,797 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3563 ms
+2021-10-13 18:34:17,188 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-10-13 18:34:17,376 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-10-13 18:34:17,563 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-10-13 18:34:17,704 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2021-10-13 18:34:18,235 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2021-10-13 18:34:18,266 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2021-10-13 18:34:19,532 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-10-13 18:34:19,532 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-10-13 18:34:20,438 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-10-13 18:34:21,079 WARN o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration [main] Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2021-10-13 18:34:21,172 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2021-10-13 18:34:21,204 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2021-10-13 18:34:21,204 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
+2021-10-13 18:34:21,219 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
+2021-10-13 18:34:21,235 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
+2021-10-13 18:34:21,563 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_1
+2021-10-13 18:34:21,657 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: DeleteUserUsingDELETE_1
+2021-10-13 18:34:21,735 INFO o.s.b.StartupInfoLogger [main] Started ChatApplicationSpringBootApplication in 9.671 seconds (JVM running for 12.329)
+2021-10-13 18:34:34,740 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-10-13 18:34:34,741 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2021-10-13 18:34:34,743 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 2 ms
+2021-10-13 18:34:34,848 INFO c.c.c.UserController [http-nio-8080-exec-1] Authorizing the user 
+2021-10-13 18:34:34,899 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-1] select user0_.id as id1_5_0_, user0_.age as age2_5_0_, user0_.create_date as create_d3_5_0_, user0_.email as email4_5_0_, user0_.first_name as first_na5_5_0_, user0_.last_name as last_nam6_5_0_, user0_.password as password7_5_0_, user0_.phone_no as phone_no8_5_0_, user0_.status as status9_5_0_, user0_.update_date as update_10_5_0_ from t_user user0_ where user0_.id=?
