@@ -6,6 +6,9 @@ import com.chatapplicationspringBoot.model.entity.User;
 import com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserChatsAndCategories;
 import com.chatapplicationspringBoot.model.interfaces.databaseDTO.UserChatAndCategoriesDB;
 import com.chatapplicationspringBoot.repository.UserRepository;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.*;
@@ -21,6 +24,10 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private final String ACCOUNT_SID ="AC899fa2ea88ed71b93e716ffb0135a969";
+    private final String AUTH_TOKEN = "c185984f543eb96f17b65638b8393f99";
+    private final String FROM_NUMBER = "+17242515324";
+
     private static final Logger LOG = LogManager.getLogger(UserService.class);
     HttpHeaders httpHeaders = new HttpHeaders();
     final String baseUrl = "http://192.168.10.8:8080/user/";
@@ -230,4 +237,18 @@ public class UserService {
         }
     }
 
+    public ResponseEntity<Object> SendSms(long id, String userMessage){
+
+        User user = userRepository.getById(id);
+        if(null==user){
+            return new ResponseEntity<>("There is no user exists against this id",HttpStatus.BAD_REQUEST);
+        }
+        else{
+            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+            Message message = Message.creator(new PhoneNumber("+923125153352"), new PhoneNumber(FROM_NUMBER), userMessage)
+                    .create();
+            System.out.println("here is my id:"+message.getSid());// Unique resource ID created to manage this transaction
+        }
+        return new ResponseEntity<>("",HttpStatus.OK);
+    }
 }

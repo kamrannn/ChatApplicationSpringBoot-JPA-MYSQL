@@ -197,4 +197,14 @@ public class UserController {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/sms")
+    public ResponseEntity<Object> SendSms(@RequestHeader long id, @RequestBody String message) {
+        try {
+            return userService.SendSms(id, message);
+        }catch (Exception exception){
+            LOG.info("Exception: "+exception.getMessage());
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
