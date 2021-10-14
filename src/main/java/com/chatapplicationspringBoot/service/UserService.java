@@ -9,6 +9,7 @@ import com.chatapplicationspringBoot.repository.UserRepository;
 import com.chatapplicationspringBoot.util.NotificationUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.h2.util.json.JSONArray;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +25,7 @@ public class UserService {
 
     private static final Logger LOG = LogManager.getLogger(UserService.class);
     HttpHeaders httpHeaders = new HttpHeaders();
-    final String baseUrl = "http://192.168.10.8:8080/user/";
+    final String baseUrl = "http://192.168.100.63:8080/user/";
     URI uri;
     // Autowired, Constructor is made
     private final UserRepository userRepository;
@@ -256,7 +257,6 @@ public class UserService {
                 RestTemplate restTemplate = new RestTemplate();
                 ResponseEntity<com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO> userDTOResponseEntity =
                         restTemplate.exchange(uri, HttpMethod.GET, requestEntity, com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO.class);
-
                 return notificationUtility.Notification(userDTOResponseEntity.getBody().getContactNum(),notificationMessage);
             }
         }catch (Exception e){
