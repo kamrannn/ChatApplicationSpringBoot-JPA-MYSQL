@@ -47,7 +47,7 @@ public class ChatController {
      */
     public ResponseEntity<Object> UnAuthorizeUser() {
         LOG.info("Unauthorized user is trying to get access");
-        return new ResponseEntity<>("Kindly login first", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Kindly do the authorization first", HttpStatus.UNAUTHORIZED);
     }
 
     /**

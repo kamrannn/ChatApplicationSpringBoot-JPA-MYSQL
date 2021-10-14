@@ -45,5 +45,8 @@
 2021-10-14 16:53:16,802 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-2] select chats0_.user_id as user_id7_1_0_, chats0_.id as id1_1_0_, chats0_.id as id1_1_1_, chats0_.answer as answer2_1_1_, chats0_.create_date as create_d3_1_1_, chats0_.question as question4_1_1_, chats0_.status as status5_1_1_, chats0_.update_date as update_d6_1_1_ from t_chat chats0_ where chats0_.user_id=?
 2021-10-14 16:53:16,804 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-2] select categories0_.user_id as user_id1_6_0_, categories0_.categories_id as categori2_6_0_, category1_.id as id1_0_1_, category1_.create_date as create_d2_0_1_, category1_.name as name3_0_1_, category1_.status as status4_0_1_, category1_.update_date as update_d5_0_1_ from t_user_categories categories0_ inner join t_category category1_ on categories0_.categories_id=category1_.id where categories0_.user_id=?
 2021-10-14 16:53:16,805 DEBUG o.h.e.j.s.SqlStatementLogger [http-nio-8080-exec-2] select roles0_.user_id as user_id1_7_0_, roles0_.roles_id as roles_id2_7_0_, role1_.id as id1_3_1_, role1_.create_date as create_d2_3_1_, role1_.description as descript3_3_1_, role1_.name as name4_3_1_, role1_.status as status5_3_1_, role1_.update_date as update_d6_3_1_ from t_user_roles roles0_ inner join t_role role1_ on roles0_.roles_id=role1_.id where roles0_.user_id=?
+<<<<<<< HEAD
 2021-10-14 17:21:32,333 WARN c.z.h.p.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=25m10s497ms167µs601ns).
 2021-10-14 17:25:08,314 WARN c.z.h.p.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m35s997ms490µs400ns).
+=======
+>>>>>>> NotificationUtility

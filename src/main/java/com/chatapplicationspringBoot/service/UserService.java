@@ -6,6 +6,8 @@ import com.chatapplicationspringBoot.model.entity.User;
 import com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserChatsAndCategories;
 import com.chatapplicationspringBoot.model.interfaces.databaseDTO.UserChatAndCategoriesDB;
 import com.chatapplicationspringBoot.repository.UserRepository;
+import com.chatapplicationspringBoot.util.SmsUtility;
+import com.chatapplicationspringBoot.util.SendEmailService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.*;
@@ -18,23 +20,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UserService {
     private static final Logger LOG = LogManager.getLogger(UserService.class);
     HttpHeaders httpHeaders = new HttpHeaders();
-    final String baseUrl = "http://192.168.10.8:8080/user/";
+    final String baseUrl = "http://192.168.100.63:8080/user/";
     URI uri;
     // Autowired, Constructor is made
     private final UserRepository userRepository;
+    SendEmailService sendEmailService; //Email service
+    SmsUtility smsUtility; //Sms Service
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, SendEmailService sendEmailService, SmsUtility smsUtility) {
         this.userRepository = userRepository;
+        this.sendEmailService = sendEmailService;
+        this.smsUtility = smsUtility;
     }
 
     /**
-     * @param email
-     * @param password
+     * @param email    "taking email from the user"
+     * @param password "taking password from the user"
      * @return
      * @Author "Kamran"
      * @Description "Authenticating the user with email and password"
@@ -59,7 +66,7 @@ public class UserService {
      */
     public ResponseEntity<Object> listAllUsers() {
         try {
-            List<User> userList = userRepository.findAll();
+            List<User> userList = userRepository.findAllByStatus(true);
             if (userList.isEmpty()) {
                 return new ResponseEntity<>("No User exists in the database", HttpStatus.NOT_FOUND);
             } else {
@@ -77,15 +84,26 @@ public class UserService {
      * @Description "Save User into database by getting values from controller"
      */
     public ResponseEntity<Object> saveUser(User user) {
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String date = formatter.format(new Date());
         int size = user.getChats().size();
         for (int i = 0; i < size; i++) {
-            String date = formatter.format(new Date());
-            user.getChats().get(i).setQuestionDate(date);
-            user.getChats().get(i).setAnswerDate(date);
+            user.getChats().get(i).setCreateDate(date); //setting chats creation date
         }
+
         try {
-            userRepository.save(user);
+            Random rnd = new Random(); //Generating a random number
+            int emailToken = rnd.nextInt(999999) + 100000; //Generating a random number of 6 digits
+            sendEmailService.sendMail(user.getEmail(), "Your verification code is: " + emailToken);
+            //Generating SMS token for the user
+            int smsToken = rnd.nextInt(999999) + 100000;
+            smsUtility.Notification(user.getPhoneNo(), "Your verification code: " + smsToken);
+            //setting the tokens in database
+            user.setEmailToken(emailToken + "");
+            user.setSmsToken(smsToken + "");
+            user.setCreateDate(date); //setting the user creation date
+            user.setStatus(false); //the user is active in the start
+            userRepository.save(user); //saving the user in the database
             return new ResponseEntity<>("User has been successfully Added", HttpStatus.OK);
         } catch (Exception e) {
             LOG.info("Exception: " + e.getMessage());
@@ -115,6 +133,11 @@ public class UserService {
     //Delete user from db by using user ID
     public ResponseEntity<Object> deleteUser(Long id) {
         try {
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String date = formatter.format(new Date());
+            Optional<User> user = userRepository.findUsersById(id);
+            user.get().setUpdateDate(date);
+            user.get().setStatus(false);
             userRepository.deleteById(id);
             return new ResponseEntity<>("User is successfully deleted", HttpStatus.OK);
         } catch (Exception e) {
@@ -131,6 +154,9 @@ public class UserService {
      */
     public ResponseEntity<Object> updateUser(User user) {
         try {
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String date = formatter.format(new Date());
+            user.setUpdateDate(date);
             userRepository.save(user);
             return new ResponseEntity<>("User has been successfully Updated", HttpStatus.OK);
         } catch (Exception e) {
@@ -152,8 +178,7 @@ public class UserService {
             int chatListSize = chat.size();
             for (int i = 0; i < chatListSize; i++) {
                 String date = formatter.format(new Date());
-                chat.get(i).setQuestionDate(date);
-                chat.get(i).setAnswerDate(date);
+                chat.get(i).setCreateDate(date);
             }
             Optional<User> user = userRepository.findUsersById(userId);//Getting the user object
             if (user.isPresent()) {
@@ -182,8 +207,8 @@ public class UserService {
      * @return
      * @Author "Kamran"
      * @Description "Getting the chat and categories list of a particular user
-     from our database if available else checking from 3rd party Rest API, if that user don't exist
-    in both of them then we will return a message of not having that user's chat and categories."
+     * from our database if available else checking from 3rd party Rest API, if that user don't exist
+     * in both of them then we will return a message of not having that user's chat and categories."
      */
     public ResponseEntity<Object> GetChatAndCategories(long userId) {
         UserChatAndCategoriesDB userDatabaseDTO = new UserChatAndCategoriesDB(); //Using this object to store the list from our own database
@@ -222,4 +247,75 @@ public class UserService {
         }
     }
 
+    /**
+     * @param id
+     * @param notificationMessage
+     * @return
+     * @Author "Kamran"
+     * @Description "using this method to send sms to the specific user"
+     * @CreatedDate "10-13-2021"
+     */
+    public ResponseEntity<Object> SendSms(long id, String notificationMessage) {
+        try {
+            Optional<User> user = userRepository.findUsersById(id);
+            if (user.isPresent()) {
+                return smsUtility.Notification(user.get().getPhoneNo(), notificationMessage);
+            } else {
+                uri = new URI(baseUrl + id); //url with user it, concatination is done with user id
+                LOG.info(uri);
+                httpHeaders.set("Authorization", "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454"); //Authorization in the header
+                HttpEntity<Object> requestEntity = new HttpEntity<>(null, httpHeaders);
+                LOG.info(requestEntity);
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO> userDTOResponseEntity =
+                        restTemplate.exchange(uri, HttpMethod.GET, requestEntity, com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO.class);
+                return smsUtility.Notification(userDTOResponseEntity.getBody().getContactNum(), notificationMessage);
+            }
+        } catch (Exception e) {
+            LOG.info("Exception: " + e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @param email
+     * @Author "Kamran"
+     * @Description "This function is checking the email service utility."
+     */
+    public ResponseEntity<Object> sendEmail(String email) {
+        try{
+            System.out.println(email);
+            sendEmailService.sendMail(email, "Checking Email API");
+            return new ResponseEntity<>("Email has been sent",HttpStatus.OK);
+        }catch (Exception e){
+            LOG.info(e.getMessage());
+            return new ResponseEntity<>("Email is not sent",HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * @param id
+     * @param smsToken
+     * @param emailToken
+     * @return
+     * @Author "Kamran"
+     * @Description "This method is doing account verification by
+     * comparing user entered and database saved sms token and email token"
+     * @CreatedDate "14-10-2021
+     */
+    public ResponseEntity<Object> AccountVerification(long id, String smsToken, String emailToken) {
+        try {
+            Optional<User> user = userRepository.findByIdAndSmsTokenAndEmailToken(id, smsToken, emailToken);
+            if (user.isPresent()) {
+                user.get().setStatus(true);
+                userRepository.save(user.get());
+                return new ResponseEntity<>("User account has been verified", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Your are entering wrong credentials", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            LOG.info(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

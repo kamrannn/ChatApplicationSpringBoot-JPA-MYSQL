@@ -17,14 +17,15 @@ import java.util.List;
 @RequestMapping("/users")
 @Api(value="User Operations - CRUD REST API's for the User")
 public class UserController {
-    final UserService userService;
     private static final Logger LOG =  LogManager.getLogger(UserController.class);
+    //This is token for checking authorization
+    private static final String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
+
+    final UserService userService;
     //UserService constructor, used in place of Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    //This is token for checking authorization
-    private static final String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
     /**
      * @Author "Kamran"
@@ -40,7 +41,7 @@ public class UserController {
 
     /**
      * @Author "Kamran"
-     * @Description "Authorizing the token"
+     * @description "Authorizing the token"
      * @param token
      * @return
      */
@@ -56,7 +57,7 @@ public class UserController {
      */
     public ResponseEntity<Object> UnAuthorizeUser() {
         LOG.info("Unauthorized user is trying to get access");
-        return new ResponseEntity<>("Kindly login first", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Kindly do the authorization first", HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -65,7 +66,7 @@ public class UserController {
      * @param token
      * @return
      */
-    @GetMapping("/listofusers")
+    @GetMapping("/list")
     public ResponseEntity<Object> listOfUsers(@RequestHeader("Authorization") String token) {
             if (authorization(token)) {
                 return userService.listAllUsers();
@@ -81,7 +82,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @PostMapping("/adduser")
+    @PostMapping("/add")
     public ResponseEntity<Object> add(@RequestHeader("Authorization") String token, @RequestBody User user) {
         try{
             if (authorization(token)) {
@@ -97,13 +98,13 @@ public class UserController {
     /**
      * @Author "Kamran"
      * @Description "This API only show certain object by taking on ID number"
-     * @param key1
+     * @param token
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUserByID(@RequestHeader("Authorization") String key1, @PathVariable Long id) {
-            if (authorization(key1)) {
+    public ResponseEntity<Object> getUserByID(@RequestHeader("Authorization") String token, @PathVariable Long id) {
+            if (authorization(token)) {
                 return userService.getUser(id); //It will return the Response
             } else {
                 return UnAuthorizeUser(); //If the user is not authorized
@@ -195,5 +196,54 @@ public class UserController {
             LOG.info("Exception: "+exception.getMessage());
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * @Author "Kamran"
+     * @param id
+     * @param message
+     * @param token
+     * @return
+     */
+    @PostMapping("/sms")
+    public ResponseEntity<Object> SendSms(@RequestHeader("Authorization") String token,@RequestHeader long id, @RequestBody String message) {
+
+        if(authorization(token)){
+            return userService.SendSms(id, message);
+        }
+        else{
+            return UnAuthorizeUser();
+        }
+    }
+
+    /**
+     * @Author "Kamran"
+     * @Description "This method is sending email to specific emails"
+     * @CreatedDate "14-10-2021
+     * @param token
+     * @param id
+     */
+    @PostMapping("/email")
+    public ResponseEntity<Object> SendEmail(@RequestHeader("Authorization") String token, @RequestHeader long id) {
+        if (authorization(token)){
+            return userService.sendEmail("rajakamran737@gmail.com");
+        }
+        else {
+            return UnAuthorizeUser();
+        }
+    }
+
+    /**
+     * @Author "Kamran"
+     * @Description "This method is using to verify the user account"
+     * @CreatedDate "14-10-2021"
+     * @param id
+     * @param smsToken
+     * @param emailToken
+     * @return
+     */
+    @GetMapping("/verification")
+    public ResponseEntity<Object> AccountVerification(@RequestHeader Long id, @RequestHeader String smsToken, @RequestHeader String emailToken){
+        return userService.AccountVerification(id,smsToken,emailToken);
     }
 }
