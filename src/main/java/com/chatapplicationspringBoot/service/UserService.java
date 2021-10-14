@@ -2,20 +2,16 @@ package com.chatapplicationspringBoot.service;
 
 import com.chatapplicationspringBoot.model.entity.Category;
 import com.chatapplicationspringBoot.model.entity.Chat;
-import com.chatapplicationspringBoot.model.entity.Sms;
 import com.chatapplicationspringBoot.model.entity.User;
 import com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserChatsAndCategories;
 import com.chatapplicationspringBoot.model.interfaces.databaseDTO.UserChatAndCategoriesDB;
 import com.chatapplicationspringBoot.repository.UserRepository;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
+import com.chatapplicationspringBoot.util.NotificationUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,9 +21,6 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private final String ACCOUNT_SID ="AC899fa2ea88ed71b93e716ffb0135a969";
-    private final String AUTH_TOKEN = "913b0ef3069e47be4476c74ac680c7a3";
-    private final String FROM_NUMBER = "+17242515324";
 
     private static final Logger LOG = LogManager.getLogger(UserService.class);
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -243,21 +236,28 @@ public class UserService {
      * @Description "using this method to send sms to the specific user"
      * @CreatedDate "10-13-2021"
      * @param id
-     * @param sms
+     * @param notificationMessage
      * @return
      */
-    public ResponseEntity<Object> SendSms(long id, Sms sms){
+    public ResponseEntity<Object> SendNotification(long id, String notificationMessage){
         try{
-            User user = userRepository.getById(id);
-            if(null==user){
-                return new ResponseEntity<>("There is no user exists against this id",HttpStatus.BAD_REQUEST);
+            Optional<User> user = userRepository.findUsersById(id);
+            if(user.isPresent()){
+                NotificationUtility notificationUtility = new NotificationUtility();
+                return notificationUtility.Notification(user.get().getPhoneNo(), notificationMessage);
             }
-            else{
-                Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-                Message message = Message.creator(new PhoneNumber(user.getPhoneNo()), new PhoneNumber(FROM_NUMBER), sms.getMessage())
-                        .create();
-                System.out.println("here is my id:"+message.getSid());// Unique resource ID created to manage this transaction
-                return new ResponseEntity<>("The message has been successfully sent to: "+user.getFirstName(),HttpStatus.OK);
+            else {
+                uri = new URI(baseUrl + id); //url with user it, concatination is done with user id
+                LOG.info(uri);
+                httpHeaders.set("Authorization", "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454"); //Authorization in the header
+                HttpEntity<Object> requestEntity = new HttpEntity<>(null, httpHeaders);
+                LOG.info(requestEntity);
+                NotificationUtility notificationUtility = new NotificationUtility();
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO> userDTOResponseEntity =
+                        restTemplate.exchange(uri, HttpMethod.GET, requestEntity, com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO.class);
+
+                return notificationUtility.Notification(userDTOResponseEntity.getBody().getContactNum(),notificationMessage);
             }
         }catch (Exception e){
             LOG.info("Exception: "+ e.getMessage());
