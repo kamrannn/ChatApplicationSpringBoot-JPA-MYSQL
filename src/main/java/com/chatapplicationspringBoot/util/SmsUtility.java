@@ -13,6 +13,14 @@ public class SmsUtility {
     private final String AUTH_TOKEN = "913b0ef3069e47be4476c74ac680c7a3";
     private final String FROM_NUMBER = "+17242515324";
 
+    /**
+     * @Author "Kamran"
+     * @Description "This method is using accepting phone number and message to send message through Twilio
+     * @CreatedDate "14-10-2021
+     * @param toNumber
+     * @param userMessage
+     * @return
+     */
     public ResponseEntity<Object> Notification(String toNumber, String userMessage){
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Message message = Message.creator(new PhoneNumber(toNumber), new PhoneNumber(FROM_NUMBER), userMessage)

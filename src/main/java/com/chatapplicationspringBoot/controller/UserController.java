@@ -41,7 +41,7 @@ public class UserController {
 
     /**
      * @Author "Kamran"
-     * @Description "Authorizing the token"
+     * @description "Authorizing the token"
      * @param token
      * @return
      */
@@ -215,11 +215,33 @@ public class UserController {
             return UnAuthorizeUser();
         }
     }
+
+    /**
+     * @Author "Kamran"
+     * @Description "This method is sending email to specific emails"
+     * @CreatedDate "14-10-2021
+     * @param token
+     * @param id
+     */
     @PostMapping("/email")
-    public void SendEmail(@RequestHeader("Authorization") String token, @RequestHeader long id) {
-        userService.sendEmail("rajakamran737@gmail.com");
+    public ResponseEntity<Object> SendEmail(@RequestHeader("Authorization") String token, @RequestHeader long id) {
+        if (authorization(token)){
+            return userService.sendEmail("rajakamran737@gmail.com");
+        }
+        else {
+            return UnAuthorizeUser();
+        }
     }
 
+    /**
+     * @Author "Kamran"
+     * @Description "This method is using to verify the user account"
+     * @CreatedDate "14-10-2021"
+     * @param id
+     * @param smsToken
+     * @param emailToken
+     * @return
+     */
     @GetMapping("/verification")
     public ResponseEntity<Object> AccountVerification(@RequestHeader Long id, @RequestHeader String smsToken, @RequestHeader String emailToken){
         return userService.AccountVerification(id,smsToken,emailToken);
