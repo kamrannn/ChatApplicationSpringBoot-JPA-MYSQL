@@ -215,9 +215,13 @@ public class UserController {
             return UnAuthorizeUser();
         }
     }
-/*
     @PostMapping("/email")
     public void SendEmail(@RequestHeader("Authorization") String token, @RequestHeader long id) {
         userService.sendEmail("rajakamran737@gmail.com");
-    }*/
+    }
+
+    @GetMapping("/verification")
+    public ResponseEntity<Object> AccountVerification(@RequestHeader Long id, @RequestHeader String smsToken, @RequestHeader String emailToken){
+        return userService.AccountVerification(id,smsToken,emailToken);
+    }
 }

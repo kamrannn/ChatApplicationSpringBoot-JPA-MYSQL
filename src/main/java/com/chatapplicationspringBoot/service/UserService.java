@@ -259,7 +259,6 @@ public class UserService {
         try{
             Optional<User> user = userRepository.findUsersById(id);
             if(user.isPresent()){
-//                SmsUtility smsUtility = new SmsUtility();
                 return smsUtility.Notification(user.get().getPhoneNo(), notificationMessage);
             }
             else {
@@ -268,7 +267,6 @@ public class UserService {
                 httpHeaders.set("Authorization", "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454"); //Authorization in the header
                 HttpEntity<Object> requestEntity = new HttpEntity<>(null, httpHeaders);
                 LOG.info(requestEntity);
-                SmsUtility smsUtility = new SmsUtility();
                 RestTemplate restTemplate = new RestTemplate();
                 ResponseEntity<com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO> userDTOResponseEntity =
                         restTemplate.exchange(uri, HttpMethod.GET, requestEntity, com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO.class);
@@ -280,9 +278,25 @@ public class UserService {
         }
     }
 
-/*    public void sendEmail(String email){
+    /**
+     * @Author "Kamran"
+     * @Description "This function is checking the email service utility."
+     * @param email
+     */
+    public void sendEmail(String email){
         System.out.println(email);
-//        Optional<User> user = userRepository.findUsersById(id);
-//        sendEmailService.sendMail(email);
-    }*/
+        sendEmailService.sendMail(email,"Checking Email API");
+    }
+
+    public ResponseEntity<Object> AccountVerification(long id, String smsToken, String emailToken){
+        Optional<User> user = userRepository.findByIdAndSmsTokenAndEmailToken(id,smsToken,emailToken);
+        if(user.isPresent()){
+            user.get().setStatus(true);
+            userRepository.save(user.get());
+            return new ResponseEntity<>("User account has been verified", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Your are entering wrong credentials",HttpStatus.BAD_REQUEST);
+        }
+    }
 }
