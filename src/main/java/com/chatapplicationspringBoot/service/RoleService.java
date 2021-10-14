@@ -32,7 +32,7 @@ public class RoleService {
     public ResponseEntity<Object> ListAllRoles(){
         try{
 //            List<Role> roleList = roleRepository.findAllByStatus(true);
-            List<Role> roleList = roleRepository.findAllActiveRolesAndPermissions();
+            List<Role> roleList = roleRepository.findAllActiveRolesAndPermissions(true,true);
             if(roleList.isEmpty()){
                 return new ResponseEntity<>("There are no roles in the Database", HttpStatus.NOT_FOUND);
             }

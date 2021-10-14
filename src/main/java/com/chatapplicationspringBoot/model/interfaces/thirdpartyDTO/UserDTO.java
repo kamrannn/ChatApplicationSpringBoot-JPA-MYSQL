@@ -12,6 +12,10 @@ public class UserDTO implements Serializable {
     private String password; //Users Password that will come from 3rd Party API
     private String name; //Users name that will come from 3rd Party API
     private String email; //Users email that will come from 3rd Party API
+    private String createdDate;
+    private String updatedDate;
+    private boolean status;
+    private String contactNum;
 
     //List of categories that will come from the 3rd Party API
     List<CategoryDTO> categoryList = new ArrayList<>();

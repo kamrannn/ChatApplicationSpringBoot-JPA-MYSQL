@@ -30,6 +30,8 @@ public class User {
     private String updateDate; // variable to store the date when user will be edited/updated
     private String phoneNo; // variable to store the date when user will be edited/updated
     private boolean status; //variable to store delete status of the permission
+    private String smsToken;
+    private String emailToken;
 
     @OneToMany(targetEntity = Chat.class,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", referencedColumnName = "id")
