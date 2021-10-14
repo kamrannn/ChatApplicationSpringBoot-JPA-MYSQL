@@ -6,10 +6,10 @@ import com.chatapplicationspringBoot.model.entity.User;
 import com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserChatsAndCategories;
 import com.chatapplicationspringBoot.model.interfaces.databaseDTO.UserChatAndCategoriesDB;
 import com.chatapplicationspringBoot.repository.UserRepository;
-import com.chatapplicationspringBoot.util.NotificationUtility;
+import com.chatapplicationspringBoot.util.SmsUtility;
+import com.chatapplicationspringBoot.util.SendEmailService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.h2.util.json.JSONArray;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UserService {
@@ -29,9 +30,13 @@ public class UserService {
     URI uri;
     // Autowired, Constructor is made
     private final UserRepository userRepository;
+    SendEmailService sendEmailService; //Email service
+    SmsUtility smsUtility; //Sms Service
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,SendEmailService sendEmailService,SmsUtility smsUtility ) {
         this.userRepository = userRepository;
+        this.sendEmailService = sendEmailService;
+        this.smsUtility =smsUtility;
     }
 
     /**
@@ -85,9 +90,19 @@ public class UserService {
         for (int i = 0; i < size; i++) {
             user.getChats().get(i).setCreateDate(date); //setting chats creation date
         }
-        user.setStatus(true); //the user is active in the start
-        user.setCreateDate(date); //setting the user creation date
+
         try {
+            Random rnd = new Random(); //Generating a random number
+            int emailToken = rnd.nextInt(999999)+ 100000; //Generating a random number of 6 digits
+            sendEmailService.sendMail(user.getEmail(),"Your verification code is: "+emailToken);
+            //Generating SMS token for the user
+            int smsToken = rnd.nextInt(999999)+ 100000;
+            smsUtility.Notification(user.getPhoneNo(), "Your verification code: "+smsToken);
+            //setting the tokens in database
+            user.setEmailToken(emailToken+"");
+            user.setSmsToken(smsToken+"");
+            user.setCreateDate(date); //setting the user creation date
+            user.setStatus(false); //the user is active in the start
             userRepository.save(user); //saving the user in the database
             return new ResponseEntity<>("User has been successfully Added", HttpStatus.OK);
         } catch (Exception e) {
@@ -240,12 +255,12 @@ public class UserService {
      * @param notificationMessage
      * @return
      */
-    public ResponseEntity<Object> SendNotification(long id, String notificationMessage){
+    public ResponseEntity<Object> SendSms(long id, String notificationMessage){
         try{
             Optional<User> user = userRepository.findUsersById(id);
             if(user.isPresent()){
-                NotificationUtility notificationUtility = new NotificationUtility();
-                return notificationUtility.Notification(user.get().getPhoneNo(), notificationMessage);
+//                SmsUtility smsUtility = new SmsUtility();
+                return smsUtility.Notification(user.get().getPhoneNo(), notificationMessage);
             }
             else {
                 uri = new URI(baseUrl + id); //url with user it, concatination is done with user id
@@ -253,15 +268,21 @@ public class UserService {
                 httpHeaders.set("Authorization", "f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454"); //Authorization in the header
                 HttpEntity<Object> requestEntity = new HttpEntity<>(null, httpHeaders);
                 LOG.info(requestEntity);
-                NotificationUtility notificationUtility = new NotificationUtility();
+                SmsUtility smsUtility = new SmsUtility();
                 RestTemplate restTemplate = new RestTemplate();
                 ResponseEntity<com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO> userDTOResponseEntity =
                         restTemplate.exchange(uri, HttpMethod.GET, requestEntity, com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO.UserDTO.class);
-                return notificationUtility.Notification(userDTOResponseEntity.getBody().getContactNum(),notificationMessage);
+                return smsUtility.Notification(userDTOResponseEntity.getBody().getContactNum(),notificationMessage);
             }
         }catch (Exception e){
             LOG.info("Exception: "+ e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+/*    public void sendEmail(String email){
+        System.out.println(email);
+//        Optional<User> user = userRepository.findUsersById(id);
+//        sendEmailService.sendMail(email);
+    }*/
 }

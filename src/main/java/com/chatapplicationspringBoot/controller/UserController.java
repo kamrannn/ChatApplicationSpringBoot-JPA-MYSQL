@@ -7,7 +7,6 @@ import io.swagger.annotations.Api;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -210,10 +209,15 @@ public class UserController {
     public ResponseEntity<Object> SendSms(@RequestHeader("Authorization") String token,@RequestHeader long id, @RequestBody String message) {
 
         if(authorization(token)){
-            return userService.SendNotification(id, message);
+            return userService.SendSms(id, message);
         }
         else{
             return UnAuthorizeUser();
         }
     }
+/*
+    @PostMapping("/email")
+    public void SendEmail(@RequestHeader("Authorization") String token, @RequestHeader long id) {
+        userService.sendEmail("rajakamran737@gmail.com");
+    }*/
 }
