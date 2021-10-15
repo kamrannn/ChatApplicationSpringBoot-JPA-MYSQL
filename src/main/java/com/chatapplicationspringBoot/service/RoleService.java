@@ -15,23 +15,33 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Role service.
+ */
 @Service
 public class RoleService {
     private static final Logger LOG =  LogManager.getLogger(CategoryService.class);
+    /**
+     * The Role repository.
+     */
     RoleRepository roleRepository;
 
+    /**
+     * Instantiates a new Role service.
+     *
+     * @param roleRepository the role repository
+     */
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
     /**
+     * This method is listing all the roles from the database and returning the response.
      * @Author "Kamran"
-     * @Description "This method is listing all the roles from the database and returning the response.
-     * @return
+     * @return response entity
      */
     public ResponseEntity<Object> ListAllRoles(){
         try{
-//            List<Role> roleList = roleRepository.findAllByStatus(true);
             List<Role> roleList = roleRepository.findAllActiveRolesAndPermissions(true,true);
             if(roleList.isEmpty()){
                 return new ResponseEntity<>("There are no roles in the Database", HttpStatus.NOT_FOUND);
@@ -46,10 +56,11 @@ public class RoleService {
     }
 
     /**
+     * This method is adding a new role in the database and returning response..
+     *
+     * @param role the role
+     * @return response entity
      * @Author "Kamran"
-     * @Description "This method is adding a new role in the database and returning response."
-     * @param role
-     * @return
      */
     public ResponseEntity<Object> AddNewRole(List<Role> role){
         if(null==role){
@@ -83,10 +94,11 @@ public class RoleService {
     }
 
     /**
+     * This method is deleting the role from the database using role id and returning response.
+     *
+     * @param roleId the role id
+     * @return response entity
      * @Author "Kamran"
-     * @Description "This method is deleting the role from the database using role id and returning response."
-     * @param roleId
-     * @return
      */
     public ResponseEntity<Object> DeleteRoleById(Long roleId){
         Optional<Role> role = roleRepository.findById(roleId);
@@ -109,6 +121,12 @@ public class RoleService {
         }
     }
 
+    /**
+     * Update role response entity.
+     *
+     * @param roleList the role list
+     * @return the response entity
+     */
     public ResponseEntity<Object> updateRole(List<Role> roleList) {
         try {
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");

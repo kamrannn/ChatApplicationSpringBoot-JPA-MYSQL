@@ -3,14 +3,15 @@ package com.chatapplicationspringBoot.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+
+/**
+ * Category class to store the categories properties
+ * @Author "Kamran"
+ * @CreatedDate "10-12-2021"
+ */
 @Data
 @Entity
 @Table(name = "t_category")
-/**
- * @Author "Kamran"
- * @Description "Category class to store the categories properties"
- * @CreatedDate "10-12-2021"
- */
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,17 +21,47 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+/**
+ * The type User service.
+ */
 @Service
 public class UserService {
+    /**
+     * LOGGER
+     */
     private static final Logger LOG = LogManager.getLogger(UserService.class);
+    /**
+     * The Http headers.
+     */
     HttpHeaders httpHeaders = new HttpHeaders();
+    /**
+     * The Base url of the target API.
+     */
     final String baseUrl = "http://192.168.100.63:8080/user/";
+    /**
+     * The Uri.
+     */
     URI uri;
-    // Autowired, Constructor is made
+    /**
+     * Instantiating the user repository
+     */
     private final UserRepository userRepository;
-    SendEmailService sendEmailService; //Email service
-    SmsUtility smsUtility; //Sms Service
+    /**
+     * The email service utility.
+     */
+    SendEmailService sendEmailService;
+    /**
+     * The Sms utility.
+     */
+    SmsUtility smsUtility;
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param userRepository   the user repository
+     * @param sendEmailService sending email service
+     * @param smsUtility       the sms utility
+     */
     public UserService(UserRepository userRepository, SendEmailService sendEmailService, SmsUtility smsUtility) {
         this.userRepository = userRepository;
         this.sendEmailService = sendEmailService;
@@ -40,11 +69,12 @@ public class UserService {
     }
 
     /**
+     * Authenticating the user with email and password.
+     *
      * @param email    "taking email from the user"
      * @param password "taking password from the user"
-     * @return
+     * @return response entity
      * @Author "Kamran"
-     * @Description "Authenticating the user with email and password"
      */
     public ResponseEntity<Object> Authentication(String email, String password) {
         try {
@@ -61,6 +91,8 @@ public class UserService {
     }
 
     /**
+     * List all users response entity.
+     *
      * @return "all users from Database"
      * @Author "Kamran"
      */
@@ -79,9 +111,11 @@ public class UserService {
     }
 
     /**
-     * @param user
+     * Save User into database by getting values from the frontend.
+     *
+     * @param user the user
+     * @return the response entity
      * @Author "Kamran"
-     * @Description "Save User into database by getting values from controller"
      */
     public ResponseEntity<Object> saveUser(User user) {
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -94,13 +128,15 @@ public class UserService {
         try {
             Random rnd = new Random(); //Generating a random number
             int emailToken = rnd.nextInt(999999) + 100000; //Generating a random number of 6 digits
+            //Using the email service utility to send the email to the entered email
             sendEmailService.sendMail(user.getEmail(), "Your verification code is: " + emailToken);
             //Generating SMS token for the user
             int smsToken = rnd.nextInt(999999) + 100000;
+            //Using the sms utility to send the message to the entered phone number
             smsUtility.Notification(user.getPhoneNo(), "Your verification code: " + smsToken);
             //setting the tokens in database
-            user.setEmailToken(emailToken + "");
-            user.setSmsToken(smsToken + "");
+            user.setEmailToken(emailToken + ""); //setting the email generated token in database
+            user.setSmsToken(smsToken + ""); //setting the sms generated token in database
             user.setCreateDate(date); //setting the user creation date
             user.setStatus(false); //the user is active in the start
             userRepository.save(user); //saving the user in the database
@@ -112,10 +148,11 @@ public class UserService {
     }
 
     /**
-     * @param id
-     * @return
+     * Finding the User from database using userID
+     *
+     * @param id the id
+     * @return user
      * @Author "Kamran"
-     * @Description "Finding the User from database using userID"
      */
     public ResponseEntity<Object> getUser(Long id) {
         try {
@@ -130,7 +167,12 @@ public class UserService {
         }
     }
 
-    //Delete user from db by using user ID
+    /**
+     * Delete user from db by using user ID.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     public ResponseEntity<Object> deleteUser(Long id) {
         try {
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -147,10 +189,11 @@ public class UserService {
     }
 
     /**
-     * @param user
-     * @return
+     * Updating the user with the user Object.
+     *
+     * @param user the user
+     * @return response entity
      * @Author "Kamran"
-     * @Description "Updating the user with the user Object"
      */
     public ResponseEntity<Object> updateUser(User user) {
         try {
@@ -166,11 +209,12 @@ public class UserService {
     }
 
     /**
-     * @param userId
-     * @param chat
-     * @return
+     * Adding the Chat with respect to User ID.
+     *
+     * @param userId the user id
+     * @param chat   the chat
+     * @return response entity
      * @Author "Kamran"
-     * @Description "Adding the Chat with respect to User ID"
      */
     public ResponseEntity<Object> AddChatByUserID(long userId, List<Chat> chat) {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -203,12 +247,13 @@ public class UserService {
     }
 
     /**
-     * @param userId
-     * @return
+     * Getting the chat and categories list of a particular user from our database if available else checking
+     * from 3rd party Rest API, if that user don't exist in both of them then we will
+     * return a message of not having that user's chat and categories.
+     *
+     * @param userId the user id
+     * @return response entity
      * @Author "Kamran"
-     * @Description "Getting the chat and categories list of a particular user
-     * from our database if available else checking from 3rd party Rest API, if that user don't exist
-     * in both of them then we will return a message of not having that user's chat and categories."
      */
     public ResponseEntity<Object> GetChatAndCategories(long userId) {
         UserChatAndCategoriesDB userDatabaseDTO = new UserChatAndCategoriesDB(); //Using this object to store the list from our own database
@@ -248,11 +293,12 @@ public class UserService {
     }
 
     /**
-     * @param id
-     * @param notificationMessage
-     * @return
+     * using this method to send sms to the specific user
+     *
+     * @param id                  the id
+     * @param notificationMessage the notification message
+     * @return response entity
      * @Author "Kamran"
-     * @Description "using this method to send sms to the specific user"
      * @CreatedDate "10-13-2021"
      */
     public ResponseEntity<Object> SendSms(long id, String notificationMessage) {
@@ -278,9 +324,11 @@ public class UserService {
     }
 
     /**
-     * @param email
+     * This function is checking the email service utility.
+     *
+     * @param email the email
+     * @return the response entity
      * @Author "Kamran"
-     * @Description "This function is checking the email service utility."
      */
     public ResponseEntity<Object> sendEmail(String email) {
         try{
@@ -294,14 +342,13 @@ public class UserService {
     }
 
     /**
-     * @param id
-     * @param smsToken
-     * @param emailToken
-     * @return
+     * This method is doing account verification by comparing user entered and database saved sms token and email token.
      * @Author "Kamran"
-     * @Description "This method is doing account verification by
-     * comparing user entered and database saved sms token and email token"
      * @CreatedDate "14-10-2021
+     * @param id         the id
+     * @param smsToken   the sms token
+     * @param emailToken the email token
+     * @return response entity
      */
     public ResponseEntity<Object> AccountVerification(long id, String smsToken, String emailToken) {
         try {

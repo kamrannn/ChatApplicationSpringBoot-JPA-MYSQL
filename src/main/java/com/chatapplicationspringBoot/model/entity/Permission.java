@@ -3,14 +3,14 @@ package com.chatapplicationspringBoot.model.entity;
 import lombok.Data;
 import javax.persistence.*;
 
+/**
+ * Permission class to store the permission properties.
+ * @Author "Kamran"
+ * @CreatedDate "10-12-2021"
+ */
 @Data
 @Entity
 @Table(name = "t_permission")
-/**
- * @Author "Kamran"
- * @Description "Permission class to store the permission properties"
- * @CreatedDate "10-12-2021"
- */
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
