@@ -3,6 +3,9 @@ package com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO;
 import lombok.Data;
 import java.io.Serializable;
 
+/**
+ * The type Chat dto.
+ */
 @Data
 public class ChatDTO implements Serializable {
     private long chatId; //chat id that will come from 3rd party API

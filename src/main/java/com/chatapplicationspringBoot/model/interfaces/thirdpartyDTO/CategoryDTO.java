@@ -3,6 +3,10 @@ package com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO;
 import lombok.Data;
 
 import java.io.Serializable;
+
+/**
+ * The type Category dto.
+ */
 @Data
 public class CategoryDTO implements Serializable {
     private Long id; //category id that will come from 3rd party API

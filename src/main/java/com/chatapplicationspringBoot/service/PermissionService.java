@@ -15,19 +15,31 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Permission service.
+ */
 @Service
 public class PermissionService {
     private static final Logger LOG =  LogManager.getLogger(CategoryService.class);
+    /**
+     * The Permission repository.
+     */
     PermissionRepository permissionRepository;
 
+    /**
+     * Instantiates a new Permission service.
+     *
+     * @param permissionRepository the permission repository
+     */
     public PermissionService(PermissionRepository permissionRepository) {
         this.permissionRepository = permissionRepository;
     }
 
     /**
+     * This method is listing all the permissions from the database.
+     *
+     * @return response entity
      * @Author "Kamran"
-     * @Description "This method is listing all the permissions from the database"
-     * @return
      */
     public ResponseEntity<Object> ListAllPermissions(){
         try{
@@ -45,10 +57,12 @@ public class PermissionService {
     }
 
     /**
+     * Add new permission response entity.
+     *
+     * @param permission the permission
+     * @return response entity
      * @Author "Kamran"
      * @Description "This method is adding new permissions in the database"
-     * @param permission
-     * @return
      */
     public ResponseEntity<Object> AddNewPermission(List<Permission> permission){
         if(null==permission){
@@ -82,10 +96,10 @@ public class PermissionService {
     }
 
     /**
+     * This method is deleting the permission from the database against permission id.
      * @Author "Kamran"
-     * @Description "This method is deleting the permission from the database against permission id."
-     * @param permissionId
-     * @return
+     * @param permissionId the permission id
+     * @return response entity
      */
     public ResponseEntity<Object> DeletePermissionById(Long permissionId){
         Optional<Permission> permission = permissionRepository.findById(permissionId);
@@ -107,6 +121,12 @@ public class PermissionService {
         }
     }
 
+    /**
+     * Update permission response entity.
+     *
+     * @param permission the permission
+     * @return the response entity
+     */
     public ResponseEntity<Object> updatePermission(List<Permission> permission) {
         try {
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");

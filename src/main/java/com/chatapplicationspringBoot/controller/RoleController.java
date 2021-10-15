@@ -1,6 +1,5 @@
 package com.chatapplicationspringBoot.controller;
 
-import com.chatapplicationspringBoot.model.entity.Permission;
 import com.chatapplicationspringBoot.model.entity.Role;
 import com.chatapplicationspringBoot.service.CategoryService;
 import com.chatapplicationspringBoot.service.RoleService;
@@ -10,9 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 import java.util.List;
 
+
+/**
+ * The type Role controller.
+ */
 @EnableSwagger2
 @RestController
 @RequestMapping("/roles")
@@ -20,16 +22,27 @@ public class RoleController {
     private static final Logger LOG =  LogManager.getLogger(CategoryService.class);
     private static final String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
+    /**
+     * The Role service.
+     */
     RoleService roleService;
+
+    /**
+     * Instantiates a new Role controller.
+     *
+     * @param roleService the role service
+     */
     public RoleController(RoleService roleService) {
         this.roleService = roleService;
     }
 
     /**
+     * Authorization boolean.
+     *
+     * @param token the token
+     * @return boolean
      * @Author "Kamran"
      * @Description "Authorizing the token"
-     * @param token
-     * @return
      */
     public boolean Authorization(String token) {
         LOG.info("Authorizing the user ");
@@ -37,9 +50,11 @@ public class RoleController {
     }
 
     /**
+     * Un authorize user response entity.
+     *
+     * @return response entity
      * @Author "Kamran"
      * @Description "if the user is un-authorized"
-     * @return
      */
     public ResponseEntity<Object> UnAuthorizeUser() {
         LOG.info("Unauthorized user is trying to get access");
@@ -47,10 +62,12 @@ public class RoleController {
     }
 
     /**
+     * List all roles response entity.
+     *
+     * @param token the token
+     * @return response entity
      * @Author "Kamran"
      * @Description "The request to list the roles will land on this controller, and it will list all the roles"
-     * @param token
-     * @return
      */
     @GetMapping("/list")
     public ResponseEntity<Object> ListAllRoles(@RequestHeader("Authorization") String token){
@@ -63,11 +80,13 @@ public class RoleController {
     }
 
     /**
+     * Add new role response entity.
+     *
+     * @param token the token
+     * @param role  the role
+     * @return response entity
      * @Author "Kamran"
      * @Description "This method is adding the new roles in the database."
-     * @param token
-     * @param role
-     * @return
      */
     @PostMapping("/add")
     public ResponseEntity<Object> AddNewRole(@RequestHeader("Authorization") String token, @RequestBody List<Role> role){
@@ -80,11 +99,13 @@ public class RoleController {
     }
 
     /**
+     * Delete role by id response entity.
+     *
+     * @param token the token
+     * @param id    the id
+     * @return response entity
      * @Author "Kamran"
      * @Description "This method is deleting the role from the database using role Id"
-     * @param token
-     * @param id
-     * @return
      */
     @DeleteMapping("/delete")
     public ResponseEntity<Object> DeleteRoleById(@RequestHeader("Authorization") String token, @RequestParam("id")  Long id){
@@ -97,11 +118,13 @@ public class RoleController {
     }
 
     /**
+     * Update role response entity.
+     *
+     * @param token    the token
+     * @param roleList the role list
+     * @return response entity
      * @Author "Kamran"
      * @Description
-     * @param token
-     * @param roleList
-     * @return
      */
     @PutMapping("/update")
     public ResponseEntity<Object> UpdateRole(@RequestHeader("Authorization") String token,@RequestBody List<Role> roleList) {

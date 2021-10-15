@@ -15,19 +15,32 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Role service.
+ */
 @Service
 public class RoleService {
     private static final Logger LOG =  LogManager.getLogger(CategoryService.class);
+    /**
+     * The Role repository.
+     */
     RoleRepository roleRepository;
 
+    /**
+     * Instantiates a new Role service.
+     *
+     * @param roleRepository the role repository
+     */
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 
     /**
+     * List all roles response entity.
+     *
+     * @return response entity
      * @Author "Kamran"
      * @Description "This method is listing all the roles from the database and returning the response.
-     * @return
      */
     public ResponseEntity<Object> ListAllRoles(){
         try{
@@ -46,10 +59,12 @@ public class RoleService {
     }
 
     /**
+     * Add new role response entity.
+     *
+     * @param role the role
+     * @return response entity
      * @Author "Kamran"
      * @Description "This method is adding a new role in the database and returning response."
-     * @param role
-     * @return
      */
     public ResponseEntity<Object> AddNewRole(List<Role> role){
         if(null==role){
@@ -83,10 +98,12 @@ public class RoleService {
     }
 
     /**
+     * Delete role by id response entity.
+     *
+     * @param roleId the role id
+     * @return response entity
      * @Author "Kamran"
      * @Description "This method is deleting the role from the database using role id and returning response."
-     * @param roleId
-     * @return
      */
     public ResponseEntity<Object> DeleteRoleById(Long roleId){
         Optional<Role> role = roleRepository.findById(roleId);
@@ -109,6 +126,12 @@ public class RoleService {
         }
     }
 
+    /**
+     * Update role response entity.
+     *
+     * @param roleList the role list
+     * @return the response entity
+     */
     public ResponseEntity<Object> updateRole(List<Role> roleList) {
         try {
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");

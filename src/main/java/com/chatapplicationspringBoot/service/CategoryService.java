@@ -15,19 +15,36 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The Category service.
+ * @Author "Kamran"
+ * @CreatedData "12-10-2021"
+ */
 @Service
 public class CategoryService {
     private static final Logger LOG =  LogManager.getLogger(CategoryService.class);
+    /**
+     * The Category repository.
+     * @Author "Kamran"
+     * @CreatedData "12-10-2021"
+     */
     CategoryRepository categoryRepository;
 
+    /**
+     * Instantiates a new Category service.
+     * @Author "Kamran"
+     * @CreatedData "12-10-2021"
+     * @param categoryRepository the category repository
+     */
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
     /**
+     * Get all chats from the Database.
      * @Author "Kamran"
-     * @Description "Get all chats from the Database"
-     * @return
+     * @CreatedData "12-10-2021"
+     * @return response entity
      */
     public ResponseEntity<Object> ListAllCategories(){
         try{
@@ -45,10 +62,12 @@ public class CategoryService {
     }
 
     /**
+     * Save categories into database by getting values from controller.
+     *
+     * @param categories the categories
+     * @return response entity
      * @Author "Kamran"
-     * @Description "Save categories into database by getting values from controller"
-     * @param categories
-     * @return
+     * @CreatedData "12-10-2021"
      */
     public ResponseEntity<Object> AddCategory(List<Category> categories) {
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -80,10 +99,11 @@ public class CategoryService {
     }
 
     /**
+     * this method is deleting the category by taking category id.
+     *
+     * @param id the id
+     * @return response entity
      * @Author "Kamran"
-     * @Description "this method is deleting the category by taking category id"
-     * @param id
-     * @return
      */
     public ResponseEntity<Object> DeleteCategory(Long id) {
         try {
@@ -101,10 +121,10 @@ public class CategoryService {
     }
 
     /**
+     * Updating the categories by category ID.
      * @Author "Kamran"
-     * @Description "Updating the categories by category ID"
-     * @param category
-     * @return
+     * @param category the category
+     * @return response entity
      */
     public ResponseEntity<Object> updateCategory(Category category) {
         try {

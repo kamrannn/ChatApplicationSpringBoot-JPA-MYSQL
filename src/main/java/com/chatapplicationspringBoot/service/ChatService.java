@@ -15,18 +15,36 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Chat service.
+ * @Author "Kamran"
+ * @CreatedData "12-10-2021"
+ */
 @Service
 public class ChatService {
     private static final Logger LOG =  LogManager.getLogger(ChatController.class);
 
-    //Autowiring the ChatRepository Class
+    /**
+     * Instantiating the chat Repository
+     */
     final private ChatRepository chatRepository;
 
+    /**
+     * Instantiates a new Chat service.
+     * @Author "Kamran"
+     * @CreatedData "12-10-2021"
+     * @param chatRepository the chat repository
+     */
     public ChatService(ChatRepository chatRepository) {
         this.chatRepository = chatRepository;
     }
 
-    //Get all chats from the Database
+    /**
+     * List all chats from the Database.
+     * @Author "Kamran"
+     * @CreatedData "12-10-2021"
+     * @return the response entity
+     */
     public ResponseEntity<Object> ListAllChat(){
         try{
             List<Chat> chatList=  chatRepository.findAll();
@@ -43,10 +61,11 @@ public class ChatService {
     }
 
     /**
+     * Update chat into database by getting values from controller.
      * @Author "Kamran"
-     * @Description "Update chat into database by getting values from controller"
-     * @param updatedChat
-     * @return
+     * @CreatedData "12-10-2021"
+     * @param updatedChat the updated chat
+     * @return response entity
      */
     public ResponseEntity<Object> updateChat(List<Chat> updatedChat){
         try {
@@ -63,7 +82,13 @@ public class ChatService {
         }
     }
 
-    //Find chat from database by using ChatID
+    /**
+     * Find chat from database by using ChatID.
+     * @Author "Kamran"
+     * @CreatedData "12-10-2021"
+     * @param id the id
+     * @return the chat
+     */
     public ResponseEntity<Object> getChat(Long id) {
         try {
             Optional<Chat> chat = chatRepository.findById(id);
@@ -81,10 +106,11 @@ public class ChatService {
     }
 
     /**
+     * Delete specific chat from the database by using chat Id.
      * @Author "Kamran"
-     * @Description "Delete specific chat from the database by using chat Id "
-     * @param id
-     * @return
+     * @CreatedData "12-10-2021"
+     * @param id the id
+     * @return response entity
      */
     public ResponseEntity<Object> deleteChat(Long id) {
         try{

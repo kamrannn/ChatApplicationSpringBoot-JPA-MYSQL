@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.List;
 
+/**
+ * The type User controller.
+ */
 @EnableSwagger2
 @RestController
 @RequestMapping("/users")
@@ -21,18 +24,29 @@ public class UserController {
     //This is token for checking authorization
     private static final String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
+    /**
+     * The User service.
+     */
     final UserService userService;
-    //UserService constructor, used in place of Autowired
+
+    /**
+     * Instantiates a new User controller.
+     *
+     * @param userService the user service
+     */
+//UserService constructor, used in place of Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     /**
+     * User login response entity.
+     *
+     * @param email    the email
+     * @param password the password
+     * @return response entity
      * @Author "Kamran"
      * @Description "Login it takes email and password from frontend then check from database by calling object with email"
-     * @param email
-     * @param password
-     * @return
      */
     @GetMapping("/login")
     public ResponseEntity<Object> UserLogin(@RequestHeader String email , @RequestHeader String password) {
@@ -40,10 +54,12 @@ public class UserController {
     }
 
     /**
+     * Authorization boolean.
+     *
+     * @param token the token
+     * @return boolean
      * @Author "Kamran"
      * @description "Authorizing the token"
-     * @param token
-     * @return
      */
     public boolean authorization(String token) {
         LOG.info("Authorizing the user ");
@@ -51,9 +67,11 @@ public class UserController {
     }
 
     /**
+     * Un authorize user response entity.
+     *
+     * @return response entity
      * @Author "Kamran"
      * @Description "if the user is un-authorized"
-     * @return
      */
     public ResponseEntity<Object> UnAuthorizeUser() {
         LOG.info("Unauthorized user is trying to get access");
@@ -61,10 +79,12 @@ public class UserController {
     }
 
     /**
+     * List of users response entity.
+     *
+     * @param token the token
+     * @return response entity
      * @Author "Kamran"
      * @Description "This api is listing all the users present in the database"
-     * @param token
-     * @return
      */
     @GetMapping("/list")
     public ResponseEntity<Object> listOfUsers(@RequestHeader("Authorization") String token) {
@@ -76,11 +96,13 @@ public class UserController {
     }
 
     /**
+     * Add response entity.
+     *
+     * @param token the token
+     * @param user  the user
+     * @return response entity
      * @Author "Kamran"
      * @Description "This API just add the user"
-     * @param token
-     * @param user
-     * @return
      */
     @PostMapping("/add")
     public ResponseEntity<Object> add(@RequestHeader("Authorization") String token, @RequestBody User user) {
@@ -96,11 +118,13 @@ public class UserController {
     }
 
     /**
+     * Gets user by id.
+     *
+     * @param token the token
+     * @param id    the id
+     * @return user by id
      * @Author "Kamran"
      * @Description "This API only show certain object by taking on ID number"
-     * @param token
-     * @param id
-     * @return
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUserByID(@RequestHeader("Authorization") String token, @PathVariable Long id) {
@@ -112,11 +136,13 @@ public class UserController {
     }
 
     /**
+     * Update user response entity.
+     *
+     * @param token the token
+     * @param user  the user
+     * @return response entity
      * @Author "Kamran"
      * @Description " This API updates the user by just giving certain ID all values should be updated otherwise other fields will be NULL"
-     * @param token
-     * @param user
-     * @return
      */
     @PutMapping("/update")
     public ResponseEntity<Object> UpdateUser(@RequestHeader("Authorization") String token, @RequestBody User user) {
@@ -128,11 +154,13 @@ public class UserController {
     }
 
     /**
+     * Delete user response entity.
+     *
+     * @param id    the id
+     * @param token the token
+     * @return response entity
      * @Author "Kamran"
      * @Description " This API deletes the user by using Path variable"
-     * @param token
-     * @param id
-     * @return
      */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> DeleteUser(@PathVariable Long id, @RequestHeader("Authorization") String token) {
@@ -150,10 +178,13 @@ public class UserController {
     }
 
     /**
+     * Delete user response entity.
+     *
+     * @param token the token
+     * @param id    the id
+     * @return the response entity
      * @Author "Kamran"
      * @Description " This API deletes the user by using Request Parameter"
-     * @param token
-     * @param id
      */
     @DeleteMapping("/delete")
     public ResponseEntity<Object> DeleteUser(@RequestHeader("Authorization") String token, @RequestParam("delete") Long id) {
@@ -172,11 +203,13 @@ public class UserController {
 
 
     /**
+     * Add chat by user id response entity.
+     *
+     * @param userId the user id
+     * @param chat   the chat
+     * @return response entity
      * @Author "Kamran"
      * @Description " This API is adding the chat with respect to User ID"
-     * @param userId
-     * @param chat
-     * @return
      */
     @PostMapping("/add/chat")
     public ResponseEntity<Object> AddChatByUserID(@RequestHeader long userId, @RequestBody List<Chat> chat) {
@@ -188,6 +221,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Chat of single user response entity.
+     *
+     * @param userId the user id
+     * @return the response entity
+     */
     @GetMapping("/user/details")
     public ResponseEntity<Object> ChatOfSingleUser(@RequestParam("userId") long userId) {
         try {
@@ -199,11 +238,13 @@ public class UserController {
     }
 
     /**
+     * Send sms response entity.
+     *
+     * @param token   the token
+     * @param id      the id
+     * @param message the message
+     * @return response entity
      * @Author "Kamran"
-     * @param id
-     * @param message
-     * @param token
-     * @return
      */
     @PostMapping("/sms")
     public ResponseEntity<Object> SendSms(@RequestHeader("Authorization") String token,@RequestHeader long id, @RequestBody String message) {
@@ -217,11 +258,14 @@ public class UserController {
     }
 
     /**
+     * Send email response entity.
+     *
+     * @param token the token
+     * @param id    the id
+     * @return the response entity
      * @Author "Kamran"
      * @Description "This method is sending email to specific emails"
      * @CreatedDate "14-10-2021
-     * @param token
-     * @param id
      */
     @PostMapping("/email")
     public ResponseEntity<Object> SendEmail(@RequestHeader("Authorization") String token, @RequestHeader long id) {
@@ -234,13 +278,15 @@ public class UserController {
     }
 
     /**
+     * Account verification response entity.
+     *
+     * @param id         the id
+     * @param smsToken   the sms token
+     * @param emailToken the email token
+     * @return response entity
      * @Author "Kamran"
      * @Description "This method is using to verify the user account"
      * @CreatedDate "14-10-2021"
-     * @param id
-     * @param smsToken
-     * @param emailToken
-     * @return
      */
     @GetMapping("/verification")
     public ResponseEntity<Object> AccountVerification(@RequestHeader Long id, @RequestHeader String smsToken, @RequestHeader String emailToken){

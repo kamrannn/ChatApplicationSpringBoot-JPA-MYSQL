@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+/**
+ * The type Sms utility.
+ */
 @Service
 public class SmsUtility {
     private final String ACCOUNT_SID ="AC899fa2ea88ed71b93e716ffb0135a969";
@@ -14,12 +17,14 @@ public class SmsUtility {
     private final String FROM_NUMBER = "+17242515324";
 
     /**
+     * Notification response entity.
+     *
+     * @param toNumber    the to number
+     * @param userMessage the user message
+     * @return response entity
      * @Author "Kamran"
      * @Description "This method is using accepting phone number and message to send message through Twilio
      * @CreatedDate "14-10-2021
-     * @param toNumber
-     * @param userMessage
-     * @return
      */
     public ResponseEntity<Object> Notification(String toNumber, String userMessage){
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);

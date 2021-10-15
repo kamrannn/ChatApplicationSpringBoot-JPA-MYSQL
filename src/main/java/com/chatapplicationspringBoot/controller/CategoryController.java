@@ -11,32 +11,47 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 
+/**
+ * The type Category controller.
+ */
 @EnableSwagger2
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
+    /**
+     * The Category service.
+     */
     CategoryService categoryService;
     private static final Logger LOG =  LogManager.getLogger(CategoryController.class);
     private static final String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 
+    /**
+     * Instantiates a new Category controller.
+     *
+     * @param categoryService the category service
+     */
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
     /**
+     * Authorization boolean.
+     *
+     * @param token the token
+     * @return boolean
      * @Author "Kamran"
      * @Description "Authorizing the token"
-     * @param token
-     * @return
      */
     public boolean Authorization(String token) {
         return CategoryController.token.equals(token);
     }
 
     /**
+     * Un authorize user response entity.
+     *
+     * @return response entity
      * @Author "Kamran"
      * @Description "if the user is un-authorized"
-     * @return
      */
     public ResponseEntity<Object> UnAuthorizeUser() {
         LOG.info("Error: Unauthorized User");
@@ -44,8 +59,11 @@ public class CategoryController {
     }
 
     /**
-     * @Author "Kamran"
+     * List all categories response entity.
+     *
+     * @param token the token
      * @return all the list of categories
+     * @Author "Kamran"
      */
     @GetMapping("/list")
     public ResponseEntity<Object> ListAllCategories(@RequestHeader("Authorization") String token) {
@@ -59,10 +77,12 @@ public class CategoryController {
     }
 
     /**
+     * Add category response entity.
+     *
+     * @param categories the categories
+     * @return response entity
      * @Author "Kamran"
      * @Description "This API just adds the category in the database"
-     * @param categories
-     * @return
      */
     @PostMapping("/add")
     public ResponseEntity<Object> AddCategory( @RequestBody List<Category> categories) {
@@ -75,10 +95,10 @@ public class CategoryController {
     }
 
     /**
-     *
-     * @param token
-     * @param id
-     * @return
+     * Delete category response entity.
+     * @param token the token
+     * @param id    the id
+     * @return response entity
      */
     @DeleteMapping("/delete")
     public ResponseEntity<Object> DeleteCategory(@RequestHeader("Authorization") String token, @RequestParam("delete") Long id) {
@@ -91,11 +111,12 @@ public class CategoryController {
     }
 
     /**
+     * Update category response entity.
+     * @param token    the token
+     * @param category the category
+     * @return response entity
      * @Author "Kamran"
      * @Description
-     * @param token
-     * @param category
-     * @return
      */
     @PutMapping("/update")
     public ResponseEntity<Object> UpdateCategory(@RequestHeader("Authorization") String token,@RequestBody Category category) {

@@ -22,17 +22,42 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+/**
+ * The type User service.
+ */
 @Service
 public class UserService {
     private static final Logger LOG = LogManager.getLogger(UserService.class);
+    /**
+     * The Http headers.
+     */
     HttpHeaders httpHeaders = new HttpHeaders();
+    /**
+     * The Base url.
+     */
     final String baseUrl = "http://192.168.100.63:8080/user/";
+    /**
+     * The Uri.
+     */
     URI uri;
     // Autowired, Constructor is made
     private final UserRepository userRepository;
+    /**
+     * The Send email service.
+     */
     SendEmailService sendEmailService; //Email service
+    /**
+     * The Sms utility.
+     */
     SmsUtility smsUtility; //Sms Service
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param userRepository   the user repository
+     * @param sendEmailService the send email service
+     * @param smsUtility       the sms utility
+     */
     public UserService(UserRepository userRepository, SendEmailService sendEmailService, SmsUtility smsUtility) {
         this.userRepository = userRepository;
         this.sendEmailService = sendEmailService;
@@ -40,9 +65,11 @@ public class UserService {
     }
 
     /**
+     * Authentication response entity.
+     *
      * @param email    "taking email from the user"
      * @param password "taking password from the user"
-     * @return
+     * @return response entity
      * @Author "Kamran"
      * @Description "Authenticating the user with email and password"
      */
@@ -61,6 +88,8 @@ public class UserService {
     }
 
     /**
+     * List all users response entity.
+     *
      * @return "all users from Database"
      * @Author "Kamran"
      */
@@ -79,7 +108,10 @@ public class UserService {
     }
 
     /**
-     * @param user
+     * Save user response entity.
+     *
+     * @param user the user
+     * @return the response entity
      * @Author "Kamran"
      * @Description "Save User into database by getting values from controller"
      */
@@ -112,8 +144,10 @@ public class UserService {
     }
 
     /**
-     * @param id
-     * @return
+     * Gets user.
+     *
+     * @param id the id
+     * @return user
      * @Author "Kamran"
      * @Description "Finding the User from database using userID"
      */
@@ -130,7 +164,13 @@ public class UserService {
         }
     }
 
-    //Delete user from db by using user ID
+    /**
+     * Delete user response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
+//Delete user from db by using user ID
     public ResponseEntity<Object> deleteUser(Long id) {
         try {
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -147,8 +187,10 @@ public class UserService {
     }
 
     /**
-     * @param user
-     * @return
+     * Update user response entity.
+     *
+     * @param user the user
+     * @return response entity
      * @Author "Kamran"
      * @Description "Updating the user with the user Object"
      */
@@ -166,9 +208,11 @@ public class UserService {
     }
 
     /**
-     * @param userId
-     * @param chat
-     * @return
+     * Add chat by user id response entity.
+     *
+     * @param userId the user id
+     * @param chat   the chat
+     * @return response entity
      * @Author "Kamran"
      * @Description "Adding the Chat with respect to User ID"
      */
@@ -203,12 +247,12 @@ public class UserService {
     }
 
     /**
-     * @param userId
-     * @return
+     * Get chat and categories response entity.
+     *
+     * @param userId the user id
+     * @return response entity
      * @Author "Kamran"
-     * @Description "Getting the chat and categories list of a particular user
-     * from our database if available else checking from 3rd party Rest API, if that user don't exist
-     * in both of them then we will return a message of not having that user's chat and categories."
+     * @Description "Getting the chat and categories list of a particular user from our database if available else checking from 3rd party Rest API, if that user don't exist in both of them then we will return a message of not having that user's chat and categories."
      */
     public ResponseEntity<Object> GetChatAndCategories(long userId) {
         UserChatAndCategoriesDB userDatabaseDTO = new UserChatAndCategoriesDB(); //Using this object to store the list from our own database
@@ -248,9 +292,11 @@ public class UserService {
     }
 
     /**
-     * @param id
-     * @param notificationMessage
-     * @return
+     * Send sms response entity.
+     *
+     * @param id                  the id
+     * @param notificationMessage the notification message
+     * @return response entity
      * @Author "Kamran"
      * @Description "using this method to send sms to the specific user"
      * @CreatedDate "10-13-2021"
@@ -278,7 +324,10 @@ public class UserService {
     }
 
     /**
-     * @param email
+     * Send email response entity.
+     *
+     * @param email the email
+     * @return the response entity
      * @Author "Kamran"
      * @Description "This function is checking the email service utility."
      */
@@ -294,13 +343,14 @@ public class UserService {
     }
 
     /**
-     * @param id
-     * @param smsToken
-     * @param emailToken
-     * @return
+     * Account verification response entity.
+     *
+     * @param id         the id
+     * @param smsToken   the sms token
+     * @param emailToken the email token
+     * @return response entity
      * @Author "Kamran"
-     * @Description "This method is doing account verification by
-     * comparing user entered and database saved sms token and email token"
+     * @Description "This method is doing account verification by comparing user entered and database saved sms token and email token"
      * @CreatedDate "14-10-2021
      */
     public ResponseEntity<Object> AccountVerification(long id, String smsToken, String emailToken) {
