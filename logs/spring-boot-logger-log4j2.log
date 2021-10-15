@@ -1,28 +1,27 @@
-2021-10-15 10:47:57,180 INFO o.s.t.c.s.AbstractTestContextBootstrapper [main] Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.chatapplicationspringBoot.ChatApplicationSpringBootApplicationTests], using SpringBootContextLoader
-2021-10-15 10:47:57,206 INFO o.s.t.c.s.AbstractContextLoader [main] Could not detect default resource locations for test class [com.chatapplicationspringBoot.ChatApplicationSpringBootApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
-2021-10-15 10:47:57,206 INFO o.s.t.c.s.AnnotationConfigContextLoaderUtils [main] Could not detect default configuration classes for test class [com.chatapplicationspringBoot.ChatApplicationSpringBootApplicationTests]: ChatApplicationSpringBootApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2021-10-15 10:47:57,464 INFO o.s.b.t.c.SpringBootTestContextBootstrapper [main] Found @SpringBootConfiguration com.chatapplicationspringBoot.ChatApplicationSpringBootApplication for test class com.chatapplicationspringBoot.ChatApplicationSpringBootApplicationTests
-2021-10-15 10:47:57,679 INFO o.s.t.c.s.AbstractTestContextBootstrapper [main] Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
-2021-10-15 10:47:57,771 INFO o.s.t.c.s.AbstractTestContextBootstrapper [main] Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@54dcfa5a, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@1817f1eb, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@767e20cf, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@3a3e78f, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@301ec38b, org.springframework.test.context.support.DirtiesContextTestExecutionListener@17a1e4ca, org.springframework.test.context.transaction.TransactionalTestExecutionListener@10ded6a9, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@c5dc4a2, org.springframework.test.context.event.EventPublishingTestExecutionListener@4a194c39, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@52066604, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@340b9973, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@56113384, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@5669c5fb, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@373ebf74, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@5f9678e1]
-2021-10-15 10:47:58,676 INFO o.s.b.StartupInfoLogger [main] Starting ChatApplicationSpringBootApplicationTests using Java 1.8.0_73 on LTI-TRAINING-05 with PID 12244 (started by kamranabbasi in F:\Development\ChatApplicationSpringBoot)
-2021-10-15 10:47:58,677 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
-2021-10-15 10:48:01,229 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2021-10-15 10:48:01,464 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 211 ms. Found 5 JPA repository interfaces.
-2021-10-15 10:48:03,741 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-10-15 10:48:03,984 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.32.Final
-2021-10-15 10:48:04,437 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-2021-10-15 10:48:05,511 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
-2021-10-15 10:48:06,338 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
-2021-10-15 10:48:06,530 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
-2021-10-15 10:48:09,160 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-10-15 10:48:09,194 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-10-15 10:48:11,951 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-10-15 10:48:14,356 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
-2021-10-15 10:48:14,426 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
-2021-10-15 10:48:14,491 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
-2021-10-15 10:48:15,165 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_1
-2021-10-15 10:48:15,344 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: DeleteUserUsingDELETE_1
-2021-10-15 10:48:15,530 INFO o.s.b.StartupInfoLogger [main] Started ChatApplicationSpringBootApplicationTests in 17.576 seconds (JVM running for 21.055)
-2021-10-15 10:48:16,054 INFO o.s.o.j.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-10-15 10:48:16,071 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
-2021-10-15 10:48:16,085 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2021-10-15 11:53:02,343 INFO o.s.b.StartupInfoLogger [main] Starting ChatApplicationSpringBootApplication using Java 1.8.0_73 on LTI-TRAINING-05 with PID 12272 (F:\Development\ChatApplicationSpringBoot\target\classes started by kamranabbasi in F:\Development\ChatApplicationSpringBoot)
+2021-10-15 11:53:02,396 INFO o.s.b.SpringApplication [main] No active profile set, falling back to default profiles: default
+2021-10-15 11:53:05,922 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2021-10-15 11:53:06,079 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 143 ms. Found 5 JPA repository interfaces.
+2021-10-15 11:53:07,661 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2021-10-15 11:53:07,676 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-15 11:53:07,692 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2021-10-15 11:53:07,692 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.53]
+2021-10-15 11:53:08,233 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2021-10-15 11:53:08,233 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 5549 ms
+2021-10-15 11:53:09,777 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-10-15 11:53:15,719 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 5.4.32.Final
+2021-10-15 11:53:16,781 INFO o.h.a.c.r.j.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2021-10-15 11:53:17,242 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2021-10-15 11:53:19,290 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2021-10-15 11:53:19,353 INFO o.h.d.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2021-10-15 11:53:22,301 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-10-15 11:53:22,332 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-10-15 11:53:23,808 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-10-15 11:53:25,030 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2021-10-15 11:53:25,061 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2021-10-15 11:53:25,061 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Context refreshed
+2021-10-15 11:53:25,124 INFO s.d.s.w.p.DocumentationPluginsBootstrapper [main] Found 1 custom documentation plugin(s)
+2021-10-15 11:53:25,155 INFO s.d.s.w.s.ApiListingReferenceScanner [main] Scanning for api listing references
+2021-10-15 11:53:25,658 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: deleteUsingDELETE_1
+2021-10-15 11:53:25,816 INFO s.d.s.w.r.o.CachingOperationNameGenerator [main] Generating unique operation named: DeleteUserUsingDELETE_1
+2021-10-15 11:53:26,033 INFO o.s.b.StartupInfoLogger [main] Started ChatApplicationSpringBootApplication in 25.437 seconds (JVM running for 33.274)
