@@ -36,15 +36,12 @@ public class RoleService {
     }
 
     /**
-     * List all roles response entity.
-     *
-     * @return response entity
+     * This method is listing all the roles from the database and returning the response.
      * @Author "Kamran"
-     * @Description "This method is listing all the roles from the database and returning the response.
+     * @return response entity
      */
     public ResponseEntity<Object> ListAllRoles(){
         try{
-//            List<Role> roleList = roleRepository.findAllByStatus(true);
             List<Role> roleList = roleRepository.findAllActiveRolesAndPermissions(true,true);
             if(roleList.isEmpty()){
                 return new ResponseEntity<>("There are no roles in the Database", HttpStatus.NOT_FOUND);
@@ -59,12 +56,11 @@ public class RoleService {
     }
 
     /**
-     * Add new role response entity.
+     * This method is adding a new role in the database and returning response..
      *
      * @param role the role
      * @return response entity
      * @Author "Kamran"
-     * @Description "This method is adding a new role in the database and returning response."
      */
     public ResponseEntity<Object> AddNewRole(List<Role> role){
         if(null==role){
@@ -98,12 +94,11 @@ public class RoleService {
     }
 
     /**
-     * Delete role by id response entity.
+     * This method is deleting the role from the database using role id and returning response.
      *
      * @param roleId the role id
      * @return response entity
      * @Author "Kamran"
-     * @Description "This method is deleting the role from the database using role id and returning response."
      */
     public ResponseEntity<Object> DeleteRoleById(Long roleId){
         Optional<Role> role = roleRepository.findById(roleId);

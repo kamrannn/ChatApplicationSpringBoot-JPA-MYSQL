@@ -5,8 +5,8 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
+ * Category class to store the categories properties
  * @Author "Kamran"
- * @Description "Category class to store the categories properties"
  * @CreatedDate "10-12-2021"
  */
 @Data

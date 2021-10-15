@@ -1,8 +1,6 @@
 package com.chatapplicationspringBoot.controller;
 
-import com.chatapplicationspringBoot.model.entity.Category;
 import com.chatapplicationspringBoot.model.entity.Permission;
-import com.chatapplicationspringBoot.model.entity.Role;
 import com.chatapplicationspringBoot.service.PermissionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 import java.util.List;
 
 /**

@@ -8,16 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
- * The type Sms utility.
+ * The Sms utility class that is providing sms service to phone numbers.
  */
 @Service
 public class SmsUtility {
-    private final String ACCOUNT_SID ="AC899fa2ea88ed71b93e716ffb0135a969";
-    private final String AUTH_TOKEN = "d946fadd211be139e44953ce69de6232";
-    private final String FROM_NUMBER = "+17242515324";
+    private final String ACCOUNT_SID ="AC899fa2ea88ed71b93e716ffb0135a969"; //twilio account SID
+    private final String AUTH_TOKEN = "d946fadd211be139e44953ce69de6232"; //twilio account TOKEN
+    private final String FROM_NUMBER = "+17242515324"; //twilio TRIAL Number
 
     /**
-     * Notification response entity.
+     * Notification response entity to send email to specific email.
      *
      * @param toNumber    the to number
      * @param userMessage the user message

@@ -7,15 +7,15 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * User class to store the user properties
+ * @Author "Kamran"
+ * @CreatedDate "10-12-2021"
+ */
 @Data
 @Entity
 @Table(name = "t_user")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-/**
- * @Author "Kamran"
- * @Description "User class to store the user properties"
- * @CreatedDate "10-12-2021"
- */
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )

@@ -1,7 +1,6 @@
 package com.chatapplicationspringBoot.model.interfaces.thirdpartyDTO;
 
 import lombok.Data;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +21,11 @@ public class UserDTO implements Serializable {
     private String contactNum;
 
     /**
-     * The Category list.
+     * List of categories that will come from the 3rd Party API.
      */
-//List of categories that will come from the 3rd Party API
     List<CategoryDTO> categoryList = new ArrayList<>();
     /**
-     * The Chat list.
+     * List of Chats that will come from the 3rd party API.
      */
-//List of Chats that will come from the 3rd party API
     List<ChatDTO> chatList = new ArrayList<>();
 }

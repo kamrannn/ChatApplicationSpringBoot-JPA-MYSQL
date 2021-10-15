@@ -35,23 +35,21 @@ public class CategoryController {
     }
 
     /**
-     * Authorization boolean.
+     * Authorizing the token.
      *
      * @param token the token
      * @return boolean
      * @Author "Kamran"
-     * @Description "Authorizing the token"
      */
     public boolean Authorization(String token) {
         return CategoryController.token.equals(token);
     }
 
     /**
-     * Un authorize user response entity.
+     * if the user is un-authorized.
      *
      * @return response entity
      * @Author "Kamran"
-     * @Description "if the user is un-authorized"
      */
     public ResponseEntity<Object> UnAuthorizeUser() {
         LOG.info("Error: Unauthorized User");
@@ -77,12 +75,11 @@ public class CategoryController {
     }
 
     /**
-     * Add category response entity.
+     * This API just adds the category in the database.
      *
      * @param categories the categories
      * @return response entity
      * @Author "Kamran"
-     * @Description "This API just adds the category in the database"
      */
     @PostMapping("/add")
     public ResponseEntity<Object> AddCategory( @RequestBody List<Category> categories) {
@@ -116,7 +113,6 @@ public class CategoryController {
      * @param category the category
      * @return response entity
      * @Author "Kamran"
-     * @Description
      */
     @PutMapping("/update")
     public ResponseEntity<Object> UpdateCategory(@RequestHeader("Authorization") String token,@RequestBody Category category) {

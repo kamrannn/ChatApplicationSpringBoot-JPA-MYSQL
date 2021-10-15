@@ -19,7 +19,7 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
     List<Permission> findAllByStatus(boolean status);
 
     /**
-     * Find by name list.
+     * Find the permission by name list.
      *
      * @param name the name
      * @return the list

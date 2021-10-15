@@ -29,7 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User>  findUsersById(long id);
 
     /**
-     * Find all by status list.
+     * Find all users by status.
      *
      * @param status the status
      * @return the list
@@ -37,7 +37,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByStatus(boolean status);
 
     /**
-     * Find by id and sms token and email token optional.
+     * Find user by id, sms token and email token.
      *
      * @param id         the id
      * @param smsToken   the sms token

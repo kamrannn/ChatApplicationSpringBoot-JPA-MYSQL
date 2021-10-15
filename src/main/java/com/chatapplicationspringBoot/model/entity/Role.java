@@ -5,14 +5,14 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Role class to store the role properties
+ * @Author "Kamran"
+ * @CreatedDate "10-12-2021"
+ */
 @Data
 @Entity
 @Table(name = "t_role")
-/**
- * @Author "Kamran"
- * @Description "Role class to store the role properties"
- * @CreatedDate "10-12-2021"
- */
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )

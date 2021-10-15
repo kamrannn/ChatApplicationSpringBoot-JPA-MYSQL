@@ -32,8 +32,8 @@ public class ChatController {
     }
 
     /**
+     * key value for the authorization of the user
      * @Author "Kamran"
-     * @Description "key value for the authorization of the "
      */
     private final static String token = "40dc498b-e837-4fa9-8e53-c1d51e01af15";
 

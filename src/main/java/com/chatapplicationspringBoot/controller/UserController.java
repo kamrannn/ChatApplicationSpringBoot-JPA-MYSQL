@@ -34,19 +34,17 @@ public class UserController {
      *
      * @param userService the user service
      */
-//UserService constructor, used in place of Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     /**
-     * User login response entity.
+     * Login it takes email and password from frontend then check from database by calling object with email.
      *
      * @param email    the email
      * @param password the password
      * @return response entity
      * @Author "Kamran"
-     * @Description "Login it takes email and password from frontend then check from database by calling object with email"
      */
     @GetMapping("/login")
     public ResponseEntity<Object> UserLogin(@RequestHeader String email , @RequestHeader String password) {
@@ -54,12 +52,11 @@ public class UserController {
     }
 
     /**
-     * Authorization boolean.
+     * Authorizing the token.
      *
      * @param token the token
      * @return boolean
      * @Author "Kamran"
-     * @description "Authorizing the token"
      */
     public boolean authorization(String token) {
         LOG.info("Authorizing the user ");
@@ -67,11 +64,10 @@ public class UserController {
     }
 
     /**
-     * Un authorize user response entity.
+     * if the user is un-authorized.
      *
      * @return response entity
      * @Author "Kamran"
-     * @Description "if the user is un-authorized"
      */
     public ResponseEntity<Object> UnAuthorizeUser() {
         LOG.info("Unauthorized user is trying to get access");
@@ -79,30 +75,29 @@ public class UserController {
     }
 
     /**
-     * List of users response entity.
+     * This api is listing all the users present in the database.
      *
      * @param token the token
      * @return response entity
      * @Author "Kamran"
-     * @Description "This api is listing all the users present in the database"
      */
     @GetMapping("/list")
     public ResponseEntity<Object> listOfUsers(@RequestHeader("Authorization") String token) {
             if (authorization(token)) {
                 return userService.listAllUsers();
             } else {
+                LOG.info("Unauthorized user trying to access the database");
                 return UnAuthorizeUser();
             }
     }
 
     /**
-     * Add response entity.
+     * This API just add the user.
      *
      * @param token the token
      * @param user  the user
      * @return response entity
      * @Author "Kamran"
-     * @Description "This API just add the user"
      */
     @PostMapping("/add")
     public ResponseEntity<Object> add(@RequestHeader("Authorization") String token, @RequestBody User user) {
@@ -110,57 +105,59 @@ public class UserController {
             if (authorization(token)) {
                 return userService.saveUser(user);
             } else {
+                LOG.info("Unauthorized user trying to access the database");
                 return UnAuthorizeUser();
             }
         }catch (Exception e){
+            LOG.info(e.getMessage());
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * Gets user by id.
+     * This API only show certain object by taking on ID number
      *
      * @param token the token
      * @param id    the id
      * @return user by id
      * @Author "Kamran"
-     * @Description "This API only show certain object by taking on ID number"
      */
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUserByID(@RequestHeader("Authorization") String token, @PathVariable Long id) {
             if (authorization(token)) {
                 return userService.getUser(id); //It will return the Response
             } else {
+                LOG.info("UnAuthorized User was trying to access the database");
                 return UnAuthorizeUser(); //If the user is not authorized
             }
     }
 
     /**
-     * Update user response entity.
+     * This API updates the user by just giving certain
+     ID all values should be updated otherwise other fields will be NULL.
      *
      * @param token the token
      * @param user  the user
      * @return response entity
      * @Author "Kamran"
-     * @Description " This API updates the user by just giving certain ID all values should be updated otherwise other fields will be NULL"
      */
     @PutMapping("/update")
     public ResponseEntity<Object> UpdateUser(@RequestHeader("Authorization") String token, @RequestBody User user) {
         if (authorization(token)) {
             return userService.updateUser(user);
         } else {
+            LOG.info("UnAuthorized User was trying to access the database");
             return UnAuthorizeUser() ;
         }
     }
 
     /**
-     * Delete user response entity.
+     * This API deletes the user by using Path variable.
      *
      * @param id    the id
      * @param token the token
      * @return response entity
      * @Author "Kamran"
-     * @Description " This API deletes the user by using Path variable"
      */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> DeleteUser(@PathVariable Long id, @RequestHeader("Authorization") String token) {
@@ -169,6 +166,7 @@ public class UserController {
             try{
                 return userService.deleteUser(id);
             }catch (Exception exception){
+                LOG.info("UnAuthorized User was trying to access the database");
                 return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
@@ -178,13 +176,13 @@ public class UserController {
     }
 
     /**
-     * Delete user response entity.
+     * This API deletes the user by using Request Parameter.
      *
      * @param token the token
      * @param id    the id
      * @return the response entity
      * @Author "Kamran"
-     * @Description " This API deletes the user by using Request Parameter"
+     * @Description " "
      */
     @DeleteMapping("/delete")
     public ResponseEntity<Object> DeleteUser(@RequestHeader("Authorization") String token, @RequestParam("delete") Long id) {
@@ -201,15 +199,13 @@ public class UserController {
         }
     }
 
-
     /**
-     * Add chat by user id response entity.
+     * This API is adding the chat with respect to User ID.
      *
      * @param userId the user id
      * @param chat   the chat
      * @return response entity
      * @Author "Kamran"
-     * @Description " This API is adding the chat with respect to User ID"
      */
     @PostMapping("/add/chat")
     public ResponseEntity<Object> AddChatByUserID(@RequestHeader long userId, @RequestBody List<Chat> chat) {
@@ -253,18 +249,18 @@ public class UserController {
             return userService.SendSms(id, message);
         }
         else{
+            LOG.info("UnAuthorized User was trying to access the database");
             return UnAuthorizeUser();
         }
     }
 
     /**
-     * Send email response entity.
+     * This method is sending email to specific emails.
      *
      * @param token the token
      * @param id    the id
      * @return the response entity
      * @Author "Kamran"
-     * @Description "This method is sending email to specific emails"
      * @CreatedDate "14-10-2021
      */
     @PostMapping("/email")
@@ -273,19 +269,19 @@ public class UserController {
             return userService.sendEmail("rajakamran737@gmail.com");
         }
         else {
+            LOG.info("UnAuthorized User was trying to access the database");
             return UnAuthorizeUser();
         }
     }
 
     /**
-     * Account verification response entity.
+     * This method is using to verify the user account.
      *
      * @param id         the id
      * @param smsToken   the sms token
      * @param emailToken the email token
      * @return response entity
      * @Author "Kamran"
-     * @Description "This method is using to verify the user account"
      * @CreatedDate "14-10-2021"
      */
     @GetMapping("/verification")

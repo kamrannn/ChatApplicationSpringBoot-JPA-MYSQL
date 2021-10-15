@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.List;
 
-
 /**
  * The type Role controller.
  */
@@ -37,12 +36,11 @@ public class RoleController {
     }
 
     /**
-     * Authorization boolean.
+     * Authorizing the token.
      *
      * @param token the token
      * @return boolean
      * @Author "Kamran"
-     * @Description "Authorizing the token"
      */
     public boolean Authorization(String token) {
         LOG.info("Authorizing the user ");

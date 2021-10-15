@@ -5,10 +5,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 /**
- * The type Send email service.
+ * This class is providing the service to send message to the specific number.
  *
  * @Author "Kamran"
- * @Description "This class is providing the service to send message to the specific number
  * @CreatedDate "14-10-2021
  */
 @Service
@@ -26,12 +25,11 @@ public class SendEmailService {
     }
 
     /**
-     * Send mail.
+     * This method is using accepting email ID and message to send mail through JavaMailSender(SMTP).
      *
      * @param email   the email
      * @param message the message
      * @Author "Kamran"
-     * @Description "This method is using accepting email ID and message to send mail through JavaMailSender(SMTP)
      * @CreatedDate "14-10-2021
      */
     public void sendMail(String email, String message) {

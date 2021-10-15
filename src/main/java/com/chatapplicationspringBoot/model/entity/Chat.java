@@ -3,14 +3,15 @@ package com.chatapplicationspringBoot.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+
+/**
+ * Chat class to store the chat properties
+ * @Author "Kamran"
+ * @CreatedDate "10-12-2021"
+ */
 @Data
 @Entity
 @Table(name = "t_chat")
-/**
- * @Author "Kamran"
- * @Description "Chat class to store the chat properties"
- * @CreatedDate "10-12-2021"
- */
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )

@@ -3,7 +3,7 @@ package com.chatapplicationspringBoot.model.entity;
 import lombok.Data;
 
 /**
- * The type Sms.
+ * The Sms POJO class.
  */
 @Data
 public class Sms {

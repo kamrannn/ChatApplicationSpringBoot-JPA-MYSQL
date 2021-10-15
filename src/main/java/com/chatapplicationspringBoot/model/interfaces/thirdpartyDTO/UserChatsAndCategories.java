@@ -11,13 +11,11 @@ import java.util.List;
 @Data
 public class UserChatsAndCategories implements Serializable {
     /**
-     * The User categories list.
+     * A list of user categories that will come from 3rd Party API.
      */
-//A list of user categories that will come from 3rd Party API
     List<CategoryDTO> userCategoriesList = new ArrayList<>();
     /**
-     * The User chat list.
+     * A list of user chats that will come from 3rd Party API.
      */
-//A list of user chats that will come from 3rd Party API
     List<ChatDTO> userChatList = new ArrayList<>();
 }
